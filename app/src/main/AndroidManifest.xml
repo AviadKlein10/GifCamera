@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="avivaviad.gifcamera">
+
+    <uses-feature android:name="android.hardware.camera" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <application
+        android:name=".App"
+        android:allowBackup="true"
+        android:hardwareAccelerated="true"
+        android:largeHeap="true"
+        android:icon="@drawable/logo_gif"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/logo_gif"
+        android:supportsRtl="false"
+        android:theme="@style/AppTheme.NoActionBar">
+        <activity
+            android:name=".view.activity.GifCameraActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
+        <activity
+            android:name=".view.activity.SettingsActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden">
+
+        </activity>
+        <activity
+            android:name=".view.activity.StartActivity"
+            android:screenOrientation="portrait">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+
+            </intent-filter>
+
+        </activity>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="46c495d7a8e2d0ec5cbf7a2215e6fc833f869e9d" />
+    </application>
+
+</manifest>

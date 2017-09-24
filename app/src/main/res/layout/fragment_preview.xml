@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+
+
+
+        <ImageView
+            android:id="@+id/preview_image"
+            android:layout_width="wrap_content"
+            android:scaleType="centerCrop"
+            android:layout_height="wrap_content" />
+
+    </FrameLayout>
+
+
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:background="@drawable/no_btn"
+            android:scaleType="centerInside"
+            android:layout_margin="15dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"/>
+
+    <ImageView
+            android:id="@+id/share"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_margin="15dp"
+            android:background="@drawable/yes_btn"
+            android:scaleType="fitCenter"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="15dp" />
+
+
+</RelativeLayout>
+
