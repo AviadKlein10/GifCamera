@@ -47,7 +47,7 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
     private EditText edit_duration_for_each_frame, edit_capture_frame_rate,
             edit_frame_count, edit_title, edit_tag_db;
     private Spinner spinner_quality, spinner_font, spinner_font_size, spinner_color;
-    private Button btn_add_frame, btn_add_image;
+    private Button btn_add_frame, btn_add_image,btn_gif_gallery;
     private CheckBox checkBoxAddFrame, checkBoxAddImage;
     private ImageView img_frame, img_small;
     private int[] arrFontColors = {Color.GREEN, Color.MAGENTA, Color.YELLOW, Color.RED, Color.BLUE,Color.DKGRAY};
@@ -86,8 +86,10 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
         spinner_color = (Spinner) findViewById(R.id.spinner_font_color);
         btn_add_frame = (Button) findViewById(R.id.btn_add_frame);
         btn_add_image = (Button) findViewById(R.id.btn_add_image);
+        btn_gif_gallery = (Button) findViewById(R.id.btn_gif_gallery);
         btn_add_frame.setOnClickListener(this);
         btn_add_image.setOnClickListener(this);
+        btn_gif_gallery.setOnClickListener(this);
         checkBoxAddFrame.setOnCheckedChangeListener(this);
         checkBoxAddImage.setOnCheckedChangeListener(this);
         findViewById(R.id.btn_default_settings).setOnClickListener(this);
@@ -322,6 +324,9 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
             case R.id.btn_default_settings:
                 SharedPreferencesManager.setDefaultSettings(this);
                 loadViewLastSettings();
+                break;
+            case R.id.btn_gif_gallery:
+                ((SettingsPresenter)mPresenter).onGifGalleryPressed();
                 break;
         }
     }

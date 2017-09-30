@@ -6,5 +6,5 @@ package avivaviad.gifcamera.view.fragments;
 
 public interface PreviewCallBack {
     void onSharePressed();
-    void onBackClicked();
+    void onBackClicked(int fromActivity);
 }

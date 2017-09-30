@@ -33,7 +33,15 @@ public class PreviewFrag extends Fragment implements View.OnClickListener {
     private float alpha;
     private Handler handler;
     private Runnable runnebleFade;
+    private int fromActivity;
 
+    public int getFromActivity() {
+        return fromActivity;
+    }
+
+    public void setFromActivity(int fromActivity) {
+        this.fromActivity = fromActivity;
+    }
 
     private void setListener(PreviewCallBack listener) {
         this.listener = listener;
@@ -82,7 +90,7 @@ public class PreviewFrag extends Fragment implements View.OnClickListener {
 
 
     public void startImagesPreview(ArrayList<Bitmap> bitmaps){
-        createImageSet(bitmaps);
+       createImageSet(bitmaps);
     }
 
 
@@ -95,12 +103,14 @@ public class PreviewFrag extends Fragment implements View.OnClickListener {
                 break;
 
             case R.id.back:
-                listener.onBackClicked();
+                listener.onBackClicked(getFromActivity());
                 break;
 
 
         }
     }
+
+
 
     private void fadeInButtonShare(){
         alpha +=0.1;

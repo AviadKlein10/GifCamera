@@ -1,10 +1,12 @@
 package avivaviad.gifcamera.presenter;
 
 import android.content.Context;
+import android.content.Intent;
 
 import java.util.HashMap;
 
 import avivaviad.gifcamera.SharedPreferencesManager;
+import avivaviad.gifcamera.view.activity.GifGalleryActivity;
 import avivaviad.gifcamera.view.activity.SettingsActivity;
 
 /**
@@ -42,6 +44,14 @@ public class SettingsPresenter extends Presenter<SettingsActivity> implements Se
     private String getValueOf(Context context,String key) {
        return SharedPreferencesManager.loadValue(context, key);
     }
+
+    @Override
+    public void onGifGalleryPressed() {
+        Intent intent = new Intent(mView.getApplicationContext(),GifGalleryActivity.class);
+        mView.startActivity(intent);
+        mView.finish();
+    }
+
 
     public interface SettingsPresenterCallBack extends BaseView {
     }

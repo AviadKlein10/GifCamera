@@ -28,6 +28,18 @@
             android:padding="10dp"
             android:text="Default"
             android:textColor="#ffffff"
+            android:textSize="26sp"
+            android:layout_marginBottom="15dp"/>
+        <Button
+            android:id="@+id/btn_gif_gallery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@android:color/darker_gray"
+            android:layout_below="@id/btn_default_settings"
+            android:padding="10dp"
+            android:text="Gif Gallery"
+            android:textColor="#ffffff"
             android:textSize="26sp" />
 
         <EditText
@@ -248,7 +260,7 @@
             android:layout_below="@+id/add_image"
             android:background="@android:color/darker_gray"
             android:padding="10dp"
-            android:text="Choose:"
+            android:text="Choose"
             android:textColor="#ffffff"
             android:textSize="26sp"
             android:paddingBottom="20dp"/>

@@ -8,7 +8,6 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 import avivaviad.gifcamera.Utils;
-import avivaviad.gifcamera.presenter.GifCameraPresenter;
 
 /**
  * Created by DELL on 17/07/2017.
@@ -19,7 +18,7 @@ public class GenerateGifFile extends Thread {
 
     private final int frameRate;
     private ArrayList<Bitmap> bitmaps;
-    GifCreationCallback gifCreationCallback;
+    private GifCreationCallback gifCreationCallback;
 
 
     public GenerateGifFile(ArrayList<Bitmap> bitmaps, int frameRate, GifCreationCallback gifCreationCallback) {

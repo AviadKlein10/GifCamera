@@ -9,6 +9,7 @@ import android.support.v4.content.ContextCompat;
 import java.util.ArrayList;
 import java.util.List;
 
+import avivaviad.gifcamera.Constans;
 import avivaviad.gifcamera.view.activity.GifCameraActivity;
 import avivaviad.gifcamera.view.activity.SettingsActivity;
 import avivaviad.gifcamera.view.activity.StartActivity;
@@ -30,6 +31,8 @@ public class StartPresenter extends Presenter<StartActivity> implements OnStartC
     public void onStartPressed() {
         if(checkPermission()){
                 Intent intent = new Intent(mView.getApplicationContext(),GifCameraActivity.class);
+                intent.putExtra("frag", Constans.FRAG_CAMERA);
+                intent.putExtra("activity",Constans.ACTIVITY_CAMERA);
                 mView.startActivity(intent);
                 mView.finish();
         }
