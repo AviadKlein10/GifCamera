@@ -234,6 +234,8 @@
         <CheckBox
             android:id="@+id/checkbox_frame"
             android:layout_width="wrap_content"
+            android:enabled="false"
+
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/add_frame"
             android:layout_alignBaseline="@+id/add_frame"
@@ -266,6 +268,7 @@
             android:paddingBottom="20dp"/>
 
         <CheckBox
+            android:enabled="false"
             android:id="@+id/checkbox_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -2,6 +2,7 @@ package avivaviad.gifcamera.view.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
@@ -77,7 +78,7 @@ public class GifGalleryActivity extends BaseActivity implements GifGalleryPresen
 
 
     private void buildAlertDialog(final int position) {
-        new AlertDialog.Builder(GifGalleryActivity.this)
+     AlertDialog  alertDialog =  new AlertDialog.Builder(GifGalleryActivity.this)
                 .setTitle("מחיקת פריט")
                 .setMessage("האם אתה בטוח שברצונך למחוק את קובץ הGIF?")
                 .setNegativeButton(android.R.string.cancel, null)
@@ -89,8 +90,10 @@ public class GifGalleryActivity extends BaseActivity implements GifGalleryPresen
                         // do the acknowledged action, beware, this is run on UI thread
                     }
                 })
-                .create()
-                .show();
+                .create();
+        alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+        alertDialog.show();
     }
 
     @Override
