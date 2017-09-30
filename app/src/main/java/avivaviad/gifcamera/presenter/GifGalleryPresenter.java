@@ -29,11 +29,12 @@ public class GifGalleryPresenter extends Presenter<GifGalleryActivity> {
         return RealmHelper.getAllGifs(mRealm);
     }
 
-    public void onItemGifClick(String timeStamp) {
+    public void onItemGifClick(String timeStamp, int frameDuration) {
         Intent intent = new Intent(mView.getApplicationContext(),GifCameraActivity.class);
         intent.putExtra("frag", Constans.FRAG_PREVIEW);
         intent.putExtra("activity",Constans.ACTIVITY_GALLERY);
         intent.putExtra("time_stamp",timeStamp);
+        intent.putExtra("frame_duration",frameDuration);
         mView.startActivity(intent);
         mView.finish();
     }

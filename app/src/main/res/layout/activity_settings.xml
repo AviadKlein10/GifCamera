@@ -40,6 +40,18 @@
             android:padding="10dp"
             android:text="Gif Gallery"
             android:textColor="#ffffff"
+            android:textSize="26sp"
+            android:layout_marginBottom="15dp"/>
+        <Button
+            android:id="@+id/btn_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@android:color/darker_gray"
+            android:layout_below="@id/btn_gif_gallery"
+            android:padding="10dp"
+            android:text="SAVE"
+            android:textColor="#ffffff"
             android:textSize="26sp" />
 
         <EditText
@@ -198,13 +210,18 @@
             android:textColor="#ffffff"
             android:textSize="30sp" />
 
-        <Spinner
-            android:id="@+id/spinner_font_color"
+        <Button
+            android:id="@+id/btn_font_color"
+            android:text="Pick color"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/font_color"
+            android:background="@android:color/darker_gray"
+            android:padding="10dp"
+
+            android:textColor="#ffffff"
             android:layout_below="@+id/font_color"
-            android:background="#ffffff" />
+            android:layout_alignStart="@+id/btn_default_settings"
+            android:layout_marginStart="14dp" />
 
 
         <TextView
@@ -294,7 +311,6 @@
             android:layout_below="@+id/tag_db"
             android:hint="text"
             android:imeOptions="actionDone"
-            android:inputType="number"
             android:lines="1"
             android:maxLines="1"
             android:textColor="#ffffff"

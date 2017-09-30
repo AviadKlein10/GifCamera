@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.util.Log;
 
 import java.io.File;
@@ -42,6 +41,7 @@ public class GifCameraPresenter extends Presenter<GifCameraActivity> implements 
     private ArrayList<Bitmap> gifBitmaps;
     private int previewQuality = 920, gifQuality = 600;
     private String gitTag;
+    private int frameDuration;
 
     public ArrayList<Bitmap> getPreviewBitmaps(Context context) {
         addFrameToPreview(context);
@@ -88,7 +88,11 @@ public class GifCameraPresenter extends Presenter<GifCameraActivity> implements 
 
        // previewBitmaps.add(Utils.getResizedBitmap(bitmap, CameraFrag.maxSize));
         // gifBitmaps.add(Utils.getResizedBitmap(bitmap, 600));
-        bitmap = BitmapEditing.drawTextToBitmap(context,bitmap,"shalom olam","a.ttf",20, Color.GREEN);
+        String title = SharedPreferencesManager.loadValue(context,SharedPreferencesManager.KEY_TITLE);
+        String fontType = SharedPreferencesManager.loadValue(context,SharedPreferencesManager.KEY_FONT_TYPE);
+        int fontSize = Integer.parseInt(SharedPreferencesManager.loadValue(context,SharedPreferencesManager.KEY_FONT_SIZE));
+        int fontColor = Integer.parseInt(SharedPreferencesManager.loadValue(context,SharedPreferencesManager.KEY_FONT_COLOR));
+        bitmap = BitmapEditing.drawTextToBitmap(context,bitmap,title,fontType,fontSize,fontColor);
     //  bitmap =  BitmapEditing.addFrame(context,bitmap, R.drawable.green_frame);
         previewBitmaps.add(Utils.getResizedBitmap(bitmap, previewQuality));
         Log.d("aniPres",CameraFrag.maxSize+"");
@@ -148,6 +152,7 @@ public class GifCameraPresenter extends Presenter<GifCameraActivity> implements 
             gifObject.setmGifSrc(uri);
             gifObject.setBitmapPaths(bitmapsPath);
             gifObject.setTimeStamp(tsStr);
+            gifObject.setFrameDuration(frameDuration);
             Realm realm = Realm.getDefaultInstance();
             RealmHelper.saveGif(gifObject,realm);
         }
@@ -253,6 +258,10 @@ public class GifCameraPresenter extends Presenter<GifCameraActivity> implements 
         BitmapFactory.decodeFile(photoPath, options);
         options.inJustDecodeBounds = false;
         return BitmapFactory.decodeFile(photoPath, options);
+    }
+
+    public void setFrameDuration(int frameDuration) {
+        this.frameDuration = frameDuration;
     }
 
     public interface GifCameraPresenterCallback extends BaseView {

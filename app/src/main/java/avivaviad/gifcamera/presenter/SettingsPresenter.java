@@ -53,6 +53,7 @@ public class SettingsPresenter extends Presenter<SettingsActivity> implements Se
     }
 
 
+
     public interface SettingsPresenterCallBack extends BaseView {
     }
 

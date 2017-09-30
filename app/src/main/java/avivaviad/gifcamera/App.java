@@ -24,7 +24,10 @@ public class App extends Application {
 
     private void initRealm() {
         Realm.init(this);
-        RealmConfiguration realmConfig = new RealmConfiguration.Builder().build();
-        Realm.setDefaultConfiguration(realmConfig);
+        RealmConfiguration config = new RealmConfiguration
+                .Builder()
+                .deleteRealmIfMigrationNeeded()
+                .build();
+        Realm.setDefaultConfiguration(config);
     }
 }
