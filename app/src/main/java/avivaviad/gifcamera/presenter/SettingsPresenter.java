@@ -52,6 +52,9 @@ public class SettingsPresenter extends Presenter<SettingsActivity> implements Se
         mView.finish();
     }
 
+    public void chooseColor(Context applicationContext) {
+    }
+
 
     public interface SettingsPresenterCallBack extends BaseView {
     }

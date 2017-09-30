@@ -49,8 +49,8 @@ public class GifCameraActivity extends BaseActivity implements BaseView, GifCame
         handler = new Handler();
         if (extras != null) {
             if (extras.getInt("frag") == Constans.FRAG_PREVIEW) {
-                if (extras.getString("time_stamp") != null) {
-                    showPreviewLayoutFromGallery(extras.getString("time_stamp"));
+                if (extras.getString("time_stamp") != null && extras.getString("frame_duration") != null) {
+                    showPreviewLayoutFromGallery(extras.getString("time_stamp"), extras.getInt("frame_duration"));
                 } else {
                     showPreviewLayout();
                 }
@@ -59,6 +59,7 @@ public class GifCameraActivity extends BaseActivity implements BaseView, GifCame
             }
             fromActivity = extras.getInt("activity");
         }
+        ((GifCameraPresenter)mPresenter).setFrameDuration(DURATION_FOR_EACH_FRAME);
     }
 
 
@@ -138,15 +139,10 @@ public class GifCameraActivity extends BaseActivity implements BaseView, GifCame
         });
     }
 
-    private void showPreviewLayoutFromGallery(final String time_stamp) {
+    private void showPreviewLayoutFromGallery(final String time_stamp, int frame_duration) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
 
-        String lastDuration = SharedPreferencesManager.loadValue(this, SharedPreferencesManager.KEY_DURATION_FOR_EACH_FRAME);
-        if (lastDuration.isEmpty()) {
-            DURATION_FOR_EACH_FRAME = 110;//default duration
-        } else {
-            DURATION_FOR_EACH_FRAME = Integer.parseInt(lastDuration);
-        }
+        DURATION_FOR_EACH_FRAME = frame_duration;
         previewFrag = PreviewFrag.newInstance(this, DURATION_FOR_EACH_FRAME);
         previewFrag.setFromActivity(fromActivity);
         ft.replace(R.id.frame_counter, previewFrag);

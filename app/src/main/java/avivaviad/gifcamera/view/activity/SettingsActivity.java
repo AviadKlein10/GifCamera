@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -47,7 +46,7 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
     private EditText edit_duration_for_each_frame, edit_capture_frame_rate,
             edit_frame_count, edit_title, edit_tag_db;
     private Spinner spinner_quality, spinner_font, spinner_font_size, spinner_color;
-    private Button btn_add_frame, btn_add_image,btn_gif_gallery;
+    private Button btn_add_frame, btn_add_image,btn_gif_gallery,btn_save,btn_font_color;
     private CheckBox checkBoxAddFrame, checkBoxAddImage;
     private ImageView img_frame, img_small;
     private int[] arrFontColors = {Color.GREEN, Color.MAGENTA, Color.YELLOW, Color.RED, Color.BLUE,Color.DKGRAY};
@@ -83,18 +82,23 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
         spinner_font = (Spinner) findViewById(R.id.spinner_font);
         spinner_font_size = (Spinner) findViewById(R.id.spinner_font_size);
         spinner_quality = (Spinner) findViewById(R.id.spinner_quality);
-        spinner_color = (Spinner) findViewById(R.id.spinner_font_color);
         btn_add_frame = (Button) findViewById(R.id.btn_add_frame);
         btn_add_image = (Button) findViewById(R.id.btn_add_image);
         btn_gif_gallery = (Button) findViewById(R.id.btn_gif_gallery);
+        btn_font_color = (Button) findViewById(R.id.btn_font_color);
+        btn_save = (Button) findViewById(R.id.btn_save);
+        btn_font_color.setOnClickListener(this);
         btn_add_frame.setOnClickListener(this);
         btn_add_image.setOnClickListener(this);
         btn_gif_gallery.setOnClickListener(this);
+        btn_save.setOnClickListener(this);
         checkBoxAddFrame.setOnCheckedChangeListener(this);
         checkBoxAddImage.setOnCheckedChangeListener(this);
         findViewById(R.id.btn_default_settings).setOnClickListener(this);
 
-        EditText.OnEditorActionListener editorActionListener = new EditText.OnEditorActionListener() {
+
+
+       /* EditText.OnEditorActionListener editorActionListener = new EditText.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 Log.d("Value:" + v.getId() + " saved successfully", "Whaay");
@@ -125,11 +129,12 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
         edit_frame_count.setOnEditorActionListener(editorActionListener);
         edit_title.setOnEditorActionListener(editorActionListener);
         edit_capture_frame_rate.setOnEditorActionListener(editorActionListener);
-        edit_tag_db.setOnEditorActionListener(editorActionListener);
+        edit_tag_db.setOnEditorActionListener(editorActionListener);*/
+
 
         String[] quality = new String[]{"low", "medium", "high"};
-        String[] fontSize = new String[]{"18", "22", "24"};
-        String[] fontType = new String[]{"18", "22", "24"};
+        String[] fontSize = new String[]{"18", "22", "24", "26", "28", "30"};
+        String[] fontType = new String[]{"font abc", "font abc", "font abc"};
         String[] fontColor = new String[]{"  ", "  ", "  ", "  ", "  ", "  "};
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, quality);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
@@ -156,7 +161,7 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
         spinner_font.setSelection(0);
         spinner_font.setOnItemSelectedListener(this);
 
-        spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, fontColor) {
+       /* spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, fontColor) {
             @NonNull
             @Override
             public View getView(int position, View convertView, @NonNull ViewGroup parent) {
@@ -166,7 +171,7 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
             }
 
             public View getDropDownView(int position, View convertView, @NonNull ViewGroup parent) {
-                View v = super.getView(position, convertView, parent);
+                View v = superz.getView(position, convertView, parent);
                 v.setBackgroundColor(arrFontColors[position]);
                 return v;
             }
@@ -174,7 +179,7 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
 
         spinner_color.setAdapter(spinnerAdapter);
         spinner_color.setSelection(0);
-        spinner_color.setOnItemSelectedListener(this);
+        spinner_color.setOnItemSelectedListener(this);*/
 
         spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, fontSize);
         spinner_font_size.setAdapter(spinnerAdapter);
@@ -184,7 +189,6 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
 
     private void saveValue(String keyTitle, CharSequence newValue) {
         SharedPreferencesManager.saveValue(this, keyTitle, newValue + "");
-        Toast.makeText(this, "Value:" + newValue + " saved successfully", Toast.LENGTH_LONG).show();
     }
 
 
@@ -218,9 +222,9 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
                 case "6":
                     spinner_font.setSelection(Integer.parseInt(loadedValue));
                     break;
-                case "7":
+                /*case "7":
                     spinner_color.setSelection(Integer.parseInt(loadedValue));
-                    break;
+                    break;*/
                 case "8":
                     checkBoxAddFrame.setChecked(isChecked(loadedValue));
                     break;
@@ -272,10 +276,6 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
                 saveValue(SharedPreferencesManager.KEY_FONT_TYPE, position + "");
                 edit_title.setTypeface(Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/" + arrFontType[position]));
                 break;
-            case R.id.spinner_font_color:
-                saveValue(SharedPreferencesManager.KEY_FONT_COLOR, position + "");
-                edit_title.setTextColor(arrFontColors[position]);
-                break;
         }
     }
 
@@ -312,6 +312,25 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
     }
 
 
+
+    private void saveAllInputs() {
+        saveValue(SharedPreferencesManager.KEY_DURATION_FOR_EACH_FRAME, edit_duration_for_each_frame.getText());
+        saveValue(SharedPreferencesManager.KEY_TITLE, edit_title.getText());
+        saveValue(SharedPreferencesManager.KEY_CAPTURE_FRAME_RATE, edit_capture_frame_rate.getText());
+        saveValue(SharedPreferencesManager.KEY_DB_TAG, edit_tag_db.getText());
+        if(!edit_frame_count.getText().toString().trim().isEmpty()){
+            if (Integer.parseInt(edit_frame_count.toString())<2){
+                Toast.makeText(this, "Minimum frame count is 2\nSaved successfully", Toast.LENGTH_LONG).show();
+                saveValue(SharedPreferencesManager.KEY_FRAME_COUNT, "2");
+                edit_frame_count.setText("2");
+            }else{
+                saveValue(SharedPreferencesManager.KEY_FRAME_COUNT, edit_frame_count.getText());
+                Toast.makeText(this, "Saved successfully", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -328,6 +347,12 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
             case R.id.btn_gif_gallery:
                 ((SettingsPresenter)mPresenter).onGifGalleryPressed();
                 break;
+            case R.id.btn_font_color:
+              ((SettingsPresenter)mPresenter).chooseColor(getApplicationContext());
+                break;
+            case R.id.btn_save:
+                saveAllInputs();
+                break;
         }
     }
 
@@ -338,7 +363,8 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
         imageIntent.setAction(Intent.ACTION_GET_CONTENT);*/
         Intent intent;
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
-            intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+           // intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
             intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
         }else{

@@ -19,6 +19,7 @@ public class GifObject extends RealmObject {
     @PrimaryKey
     private String timeStamp;
     private RealmList<RealmString> bitmapPaths;
+    private int frameDuration;
 
     public GifObject(String mGifSrc, String mGifTag) {
         this.mGifSrc = mGifSrc;
@@ -61,4 +62,11 @@ public class GifObject extends RealmObject {
     }
 
 
+    public int getFrameDuration() {
+        return frameDuration;
+    }
+
+    public void setFrameDuration(int frameDuration) {
+        this.frameDuration = frameDuration;
+    }
 }

@@ -98,7 +98,7 @@ public class GifGalleryActivity extends BaseActivity implements GifGalleryPresen
 
     @Override
     public void onItemClick(View view, int position) {
-        ((GifGalleryPresenter) mPresenter).onItemGifClick(mArrGifs.get(position).getTimeStamp());
+        ((GifGalleryPresenter) mPresenter).onItemGifClick(mArrGifs.get(position).getTimeStamp(),mArrGifs.get(position).getFrameDuration());
     }
 
 
