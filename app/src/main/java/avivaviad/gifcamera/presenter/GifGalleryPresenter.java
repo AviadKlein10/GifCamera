@@ -34,7 +34,7 @@ public class GifGalleryPresenter extends Presenter<GifGalleryActivity> {
     }
 
 
-    public void onItemGifClick(String timeStamp, int frameDuration) {
+    public void onItemGifClick(String timeStamp, String frameDuration) {
         Intent intent = new Intent(mView.getApplicationContext(),GifCameraActivity.class);
         intent.putExtra("frag", Constans.FRAG_PREVIEW);
         intent.putExtra("activity",Constans.ACTIVITY_GALLERY);

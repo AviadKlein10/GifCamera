@@ -91,8 +91,9 @@ public class GifCameraPresenter extends Presenter<GifCameraActivity> implements 
         String title = SharedPreferencesManager.loadValue(context,SharedPreferencesManager.KEY_TITLE);
         String fontType = SharedPreferencesManager.loadValue(context,SharedPreferencesManager.KEY_FONT_TYPE);
         int fontSize = Integer.parseInt(SharedPreferencesManager.loadValue(context,SharedPreferencesManager.KEY_FONT_SIZE));
-        int fontColor = Integer.parseInt(SharedPreferencesManager.loadValue(context,SharedPreferencesManager.KEY_FONT_COLOR));
-        bitmap = BitmapEditing.drawTextToBitmap(context,bitmap,title,fontType,fontSize,fontColor);
+        String fontColor = SharedPreferencesManager.loadValue(context,SharedPreferencesManager.KEY_FONT_COLOR);//TODO fix load font color
+
+      //  bitmap = BitmapEditing.drawTextToBitmap(context,bitmap,title,fontType,fontSize,fontColor);
     //  bitmap =  BitmapEditing.addFrame(context,bitmap, R.drawable.green_frame);
         previewBitmaps.add(Utils.getResizedBitmap(bitmap, previewQuality));
         Log.d("aniPres",CameraFrag.maxSize+"");

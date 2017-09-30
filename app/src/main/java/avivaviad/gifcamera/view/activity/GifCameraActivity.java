@@ -49,7 +49,7 @@ public class GifCameraActivity extends BaseActivity implements BaseView, GifCame
         handler = new Handler();
         if (extras != null) {
             if (extras.getInt("frag") == Constans.FRAG_PREVIEW) {
-                if (extras.getString("time_stamp") != null && extras.getString("frame_duration") != null) {
+                if (!extras.getString("time_stamp").isEmpty()&& !extras.getString("frame_duration").isEmpty()) {
                     showPreviewLayoutFromGallery(extras.getString("time_stamp"), extras.getInt("frame_duration"));
                 } else {
                     showPreviewLayout();
@@ -142,8 +142,8 @@ public class GifCameraActivity extends BaseActivity implements BaseView, GifCame
     private void showPreviewLayoutFromGallery(final String time_stamp, int frame_duration) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
 
-        DURATION_FOR_EACH_FRAME = frame_duration;
-        previewFrag = PreviewFrag.newInstance(this, DURATION_FOR_EACH_FRAME);
+       // DURATION_FOR_EACH_FRAME = frame_duration;
+        previewFrag = PreviewFrag.newInstance(this, frame_duration);
         previewFrag.setFromActivity(fromActivity);
         ft.replace(R.id.frame_counter, previewFrag);
         ft.commit();

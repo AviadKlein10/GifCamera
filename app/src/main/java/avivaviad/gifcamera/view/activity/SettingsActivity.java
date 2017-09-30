@@ -319,7 +319,7 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
         saveValue(SharedPreferencesManager.KEY_CAPTURE_FRAME_RATE, edit_capture_frame_rate.getText());
         saveValue(SharedPreferencesManager.KEY_DB_TAG, edit_tag_db.getText());
         if(!edit_frame_count.getText().toString().trim().isEmpty()){
-            if (Integer.parseInt(edit_frame_count.toString())<2){
+            if (Integer.parseInt(edit_frame_count.getText().toString())<2){
                 Toast.makeText(this, "Minimum frame count is 2\nSaved successfully", Toast.LENGTH_LONG).show();
                 saveValue(SharedPreferencesManager.KEY_FRAME_COUNT, "2");
                 edit_frame_count.setText("2");

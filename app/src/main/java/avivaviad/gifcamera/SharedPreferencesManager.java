@@ -45,7 +45,7 @@ public class SharedPreferencesManager {
         saveValue(context,KEY_TITLE,"");
         saveValue(context,KEY_FONT_SIZE,"2");
         saveValue(context,KEY_FONT_TYPE,"0");
-        saveValue(context,KEY_FONT_COLOR,"0");
+        saveValue(context,KEY_FONT_COLOR,"#ffffff");
         saveValue(context,KEY_CHECK_ADD_FRAME,"0");
         saveValue(context,KEY_FRAME_SRC,"");
         saveValue(context,KEY_CHECK_ADD_IMAGE,"0");
