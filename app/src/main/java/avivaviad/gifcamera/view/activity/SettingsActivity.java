@@ -10,6 +10,7 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
@@ -27,6 +28,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.pes.androidmaterialcolorpickerdialog.ColorPicker;
+import com.pes.androidmaterialcolorpickerdialog.ColorPickerCallback;
 
 import java.util.HashMap;
 
@@ -49,6 +52,7 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
     private Button btn_add_frame, btn_add_image,btn_gif_gallery,btn_save,btn_font_color;
     private CheckBox checkBoxAddFrame, checkBoxAddImage;
     private ImageView img_frame, img_small;
+    private ColorPicker cp= null;
     private int[] arrFontColors = {Color.GREEN, Color.MAGENTA, Color.YELLOW, Color.RED, Color.BLUE,Color.DKGRAY};
     private int[] arrFontSize = {18, 20, 22, 24, 26, 28, 30};
     private String[] arrFontType = {"GothamRounded-Bold.otf", "Grange.ttf", "a.ttf"};
@@ -160,6 +164,19 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
         spinner_font.setAdapter(spinnerAdapter);
         spinner_font.setSelection(0);
         spinner_font.setOnItemSelectedListener(this);
+
+         cp = new ColorPicker(this, 50, 50, 50, 50);
+
+    /* Set a new Listener called when user click "select" */
+        cp.setCallback(new ColorPickerCallback() {
+            @Override
+            public void onColorChosen(@ColorInt int color) {
+                // Do whatever you want
+                // Examples
+                SharedPreferencesManager.saveValue(getApplicationContext(),SharedPreferencesManager.KEY_FONT_COLOR, String.valueOf(color));
+                cp.cancel();
+            }
+        });
 
        /* spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, fontColor) {
             @NonNull
@@ -348,7 +365,7 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
                 ((SettingsPresenter)mPresenter).onGifGalleryPressed();
                 break;
             case R.id.btn_font_color:
-              ((SettingsPresenter)mPresenter).chooseColor(getApplicationContext());
+                 cp.show();
                 break;
             case R.id.btn_save:
                 saveAllInputs();
@@ -379,7 +396,8 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK && data.getData()!=null & requestCode == READ_RC_SMALL_IMG || requestCode == READ_RC_FRAME) {
+      //  if (resultCode == Activity.RESULT_OK && data.getData()!=null & requestCode == READ_RC_SMALL_IMG || requestCode == READ_RC_FRAME) {
+        if(resultCode == Activity.RESULT_OK && data.getData()!=null){
             Log.d("urithd", data.getData() + "");
             Log.d("urithp", data.getData().getPath() + "");
 

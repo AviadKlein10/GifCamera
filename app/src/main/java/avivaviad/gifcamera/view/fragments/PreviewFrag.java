@@ -89,10 +89,9 @@ public class PreviewFrag extends Fragment implements View.OnClickListener {
     }
 
 
-    public void startImagesPreview(ArrayList<Bitmap> bitmaps){
-       createImageSet(bitmaps);
+    public void startImagesPreview(ArrayList<Bitmap> bitmaps) {
+        createImageSet(bitmaps);
     }
-
 
 
     @Override
@@ -111,11 +110,10 @@ public class PreviewFrag extends Fragment implements View.OnClickListener {
     }
 
 
-
-    private void fadeInButtonShare(){
-        alpha +=0.1;
-        if(alpha<1){
-            handler.postDelayed(runnebleFade,1000);
+    private void fadeInButtonShare() {
+        alpha += 0.1;
+        if (alpha < 1) {
+            handler.postDelayed(runnebleFade, 1000);
         }
     }
 
@@ -134,10 +132,11 @@ public class PreviewFrag extends Fragment implements View.OnClickListener {
     }
 
     public void makeGifSharable(String uri) {
+
         handler.removeCallbacks(runnebleFade);
         progressBar.setVisibility(View.INVISIBLE);
-    shareImage.setAlpha(1f);
-    shareImage.setEnabled(true);
+        shareImage.setAlpha(1f);
+        shareImage.setEnabled(true);
     }
 
 

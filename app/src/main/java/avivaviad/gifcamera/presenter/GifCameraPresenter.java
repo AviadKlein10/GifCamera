@@ -135,7 +135,7 @@ public class GifCameraPresenter extends Presenter<GifCameraActivity> implements 
                 pathList.add(saveBitmapLocally(previewBitmaps.get(i),ts,context));
                 Log.d("pathpath",pathList.get(i).getImgPath());
                 if (i==previewBitmaps.size()-1){
-                    saveUsingRealm(pathList,uri);
+                    saveUsingRealm(pathList,uri,context);
                 }
             }
         }
@@ -143,7 +143,7 @@ public class GifCameraPresenter extends Presenter<GifCameraActivity> implements 
 
     }
 
-    private void saveUsingRealm(RealmList<RealmString> bitmapsPath, String uri) {
+    private void saveUsingRealm(RealmList<RealmString> bitmapsPath, String uri,Context context) {
         if(!gitTag.isEmpty()){
 
             Long tsLong = System.currentTimeMillis()/1000;
@@ -153,7 +153,8 @@ public class GifCameraPresenter extends Presenter<GifCameraActivity> implements 
             gifObject.setmGifSrc(uri);
             gifObject.setBitmapPaths(bitmapsPath);
             gifObject.setTimeStamp(tsStr);
-            gifObject.setFrameDuration(frameDuration);
+            int frameDurationShared= Integer.parseInt(SharedPreferencesManager.loadValue(context,SharedPreferencesManager.KEY_DURATION_FOR_EACH_FRAME));
+            gifObject.setFrameDuration(frameDurationShared);
             Realm realm = Realm.getDefaultInstance();
             RealmHelper.saveGif(gifObject,realm);
         }
