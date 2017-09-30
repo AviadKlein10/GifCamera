@@ -9,12 +9,16 @@ import avivaviad.gifcamera.RealmHelper;
 import avivaviad.gifcamera.model.GifObject;
 import avivaviad.gifcamera.view.activity.GifCameraActivity;
 import avivaviad.gifcamera.view.activity.GifGalleryActivity;
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * Created by Aviad on 27/09/2017.
  */
 
 public class GifGalleryPresenter extends Presenter<GifGalleryActivity> {
+
+
     @Override
     public void onResume() {
 
@@ -29,6 +33,7 @@ public class GifGalleryPresenter extends Presenter<GifGalleryActivity> {
         return RealmHelper.getAllGifs(mRealm);
     }
 
+
     public void onItemGifClick(String timeStamp, int frameDuration) {
         Intent intent = new Intent(mView.getApplicationContext(),GifCameraActivity.class);
         intent.putExtra("frag", Constans.FRAG_PREVIEW);
@@ -38,4 +43,17 @@ public class GifGalleryPresenter extends Presenter<GifGalleryActivity> {
         mView.startActivity(intent);
         mView.finish();
     }
+
+    public void searchGifsByTag(String tag, Realm realm) {
+        RealmResults<GifObject> gifsOjects = RealmHelper.loadGifsByTag(tag, realm);
+        mView.onSearchArrived(gifsOjects);
+
+    }
+
+
+    public interface GifGallaryListener {
+        void onSearchArrived(RealmResults<GifObject> gifsOjects);
+    }
+
+
 }

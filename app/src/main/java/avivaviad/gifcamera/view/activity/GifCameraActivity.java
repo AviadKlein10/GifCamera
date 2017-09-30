@@ -16,6 +16,7 @@ import avivaviad.gifcamera.Constans;
 import avivaviad.gifcamera.R;
 import avivaviad.gifcamera.RealmHelper;
 import avivaviad.gifcamera.SharedPreferencesManager;
+import avivaviad.gifcamera.model.GifObject;
 import avivaviad.gifcamera.presenter.BaseView;
 import avivaviad.gifcamera.presenter.GifCameraPresenter;
 import avivaviad.gifcamera.presenter.Presenter;
@@ -140,6 +141,7 @@ public class GifCameraActivity extends BaseActivity implements BaseView, GifCame
 
     private void showPreviewLayoutFromGallery(final String time_stamp, int frame_duration) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
+
         DURATION_FOR_EACH_FRAME = frame_duration;
         previewFrag = PreviewFrag.newInstance(this, DURATION_FOR_EACH_FRAME);
         previewFrag.setFromActivity(fromActivity);
@@ -149,8 +151,9 @@ public class GifCameraActivity extends BaseActivity implements BaseView, GifCame
             @Override
             public void run() {
                 Realm realm = Realm.getDefaultInstance();
-                ArrayList<Bitmap> arrBitmaps = ((GifCameraPresenter) mPresenter).convertPathsToBitmaps(RealmHelper.loadGif(time_stamp, realm));
-                previewFrag.startImagesPreview(arrBitmaps);
+                GifObject gifObject = RealmHelper.loadGif(time_stamp, realm);
+                ArrayList<Bitmap> bitmaps = ((GifCameraPresenter) mPresenter).convertPathsToBitmaps(gifObject);
+                previewFrag.startImagesPreview(bitmaps);
             }
         }, 1000);
         inPreview = true;

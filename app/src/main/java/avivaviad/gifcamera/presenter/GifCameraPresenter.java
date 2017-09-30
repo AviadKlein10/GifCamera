@@ -246,7 +246,7 @@ public class GifCameraPresenter extends Presenter<GifCameraActivity> implements 
         RealmList<RealmString> realmList = gifObject.getBitmapPaths();
         ArrayList<Bitmap> arrBitmaps = new ArrayList<>();
         for (int i = 0; i < realmList.size(); i++) {
-            arrBitmaps.add(i,decodeFile(realmList.get(i).toString()));
+            arrBitmaps.add(i,decodeFile(realmList.get(i).getImgPath()));
         }
         return arrBitmaps;
     }
