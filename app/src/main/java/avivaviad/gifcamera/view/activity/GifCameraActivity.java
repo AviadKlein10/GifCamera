@@ -16,6 +16,7 @@ import avivaviad.gifcamera.Constans;
 import avivaviad.gifcamera.R;
 import avivaviad.gifcamera.RealmHelper;
 import avivaviad.gifcamera.SharedPreferencesManager;
+import avivaviad.gifcamera.model.GifObject;
 import avivaviad.gifcamera.presenter.BaseView;
 import avivaviad.gifcamera.presenter.GifCameraPresenter;
 import avivaviad.gifcamera.presenter.Presenter;
@@ -46,14 +47,14 @@ public class GifCameraActivity extends BaseActivity implements BaseView, GifCame
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         Bundle extras = getIntent().getExtras();
         handler = new Handler();
-        if(extras!=null){
-            if(extras.getInt("frag") == Constans.FRAG_PREVIEW){
-                if(extras.getString("time_stamp")!=null){
+        if (extras != null) {
+            if (extras.getInt("frag") == Constans.FRAG_PREVIEW) {
+                if (extras.getString("time_stamp") != null) {
                     showPreviewLayoutFromGallery(extras.getString("time_stamp"));
-                }else{
+                } else {
                     showPreviewLayout();
                 }
-            }else {
+            } else {
                 startCameraFrag();
             }
             fromActivity = extras.getInt("activity");
@@ -61,13 +62,12 @@ public class GifCameraActivity extends BaseActivity implements BaseView, GifCame
     }
 
 
-
     private void startCameraFrag() {
-        ((GifCameraPresenter)mPresenter).setFrameCount(SharedPreferencesManager.loadValue(getApplicationContext(),SharedPreferencesManager.KEY_FRAME_COUNT));
-        ((GifCameraPresenter)mPresenter).setCaptureFrameRate(SharedPreferencesManager.loadValue(getApplicationContext(),SharedPreferencesManager.KEY_CAPTURE_FRAME_RATE));
-        ((GifCameraPresenter)mPresenter).setTextParameters(SharedPreferencesManager.loadValue(getApplicationContext(),SharedPreferencesManager.KEY_TITLE),SharedPreferencesManager.loadValue(getApplicationContext(),SharedPreferencesManager.KEY_FONT_TYPE)
-                , Integer.parseInt(SharedPreferencesManager.loadValue(getApplicationContext(),SharedPreferencesManager.KEY_FONT_SIZE)));
-        ((GifCameraPresenter)mPresenter).setTag(SharedPreferencesManager.loadValue(getApplicationContext(),SharedPreferencesManager.KEY_DB_TAG));
+        ((GifCameraPresenter) mPresenter).setFrameCount(SharedPreferencesManager.loadValue(getApplicationContext(), SharedPreferencesManager.KEY_FRAME_COUNT));
+        ((GifCameraPresenter) mPresenter).setCaptureFrameRate(SharedPreferencesManager.loadValue(getApplicationContext(), SharedPreferencesManager.KEY_CAPTURE_FRAME_RATE));
+        ((GifCameraPresenter) mPresenter).setTextParameters(SharedPreferencesManager.loadValue(getApplicationContext(), SharedPreferencesManager.KEY_TITLE), SharedPreferencesManager.loadValue(getApplicationContext(), SharedPreferencesManager.KEY_FONT_TYPE)
+                , Integer.parseInt(SharedPreferencesManager.loadValue(getApplicationContext(), SharedPreferencesManager.KEY_FONT_SIZE)));
+        ((GifCameraPresenter) mPresenter).setTag(SharedPreferencesManager.loadValue(getApplicationContext(), SharedPreferencesManager.KEY_DB_TAG));
         showCameraFragment();
     }
 
@@ -124,7 +124,7 @@ public class GifCameraActivity extends BaseActivity implements BaseView, GifCame
             @Override
             public void run() {
                 cameraFrag.showCountDownText(false);
-                ((GifCameraPresenter) mPresenter).takePicture(cameraFrag.getBitmapFromTextureView(),getApplicationContext());
+                ((GifCameraPresenter) mPresenter).takePicture(cameraFrag.getBitmapFromTextureView(), getApplicationContext());
             }
         });
     }
@@ -141,11 +141,11 @@ public class GifCameraActivity extends BaseActivity implements BaseView, GifCame
     private void showPreviewLayoutFromGallery(final String time_stamp) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
 
-        String lastDuration = SharedPreferencesManager.loadValue(this,SharedPreferencesManager.KEY_DURATION_FOR_EACH_FRAME);
-        if(lastDuration.isEmpty()){
-            DURATION_FOR_EACH_FRAME =110;//default duration
-        }else{
-            DURATION_FOR_EACH_FRAME =Integer.parseInt(lastDuration);
+        String lastDuration = SharedPreferencesManager.loadValue(this, SharedPreferencesManager.KEY_DURATION_FOR_EACH_FRAME);
+        if (lastDuration.isEmpty()) {
+            DURATION_FOR_EACH_FRAME = 110;//default duration
+        } else {
+            DURATION_FOR_EACH_FRAME = Integer.parseInt(lastDuration);
         }
         previewFrag = PreviewFrag.newInstance(this, DURATION_FOR_EACH_FRAME);
         previewFrag.setFromActivity(fromActivity);
@@ -155,8 +155,9 @@ public class GifCameraActivity extends BaseActivity implements BaseView, GifCame
             @Override
             public void run() {
                 Realm realm = Realm.getDefaultInstance();
-                ArrayList<Bitmap> arrBitmaps = ((GifCameraPresenter)mPresenter).convertPathsToBitmaps(RealmHelper.loadGif(time_stamp,realm));
-                previewFrag.startImagesPreview(arrBitmaps);
+                GifObject gifObject = RealmHelper.loadGif(time_stamp, realm);
+                ArrayList<Bitmap> bitmaps = ((GifCameraPresenter) mPresenter).convertPathsToBitmaps(gifObject);
+                previewFrag.startImagesPreview(bitmaps);
             }
         }, 1000);
         inPreview = true;
@@ -165,11 +166,11 @@ public class GifCameraActivity extends BaseActivity implements BaseView, GifCame
     public void showPreviewLayout() {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
 
-        String lastDuration = SharedPreferencesManager.loadValue(this,SharedPreferencesManager.KEY_DURATION_FOR_EACH_FRAME);
-        if(lastDuration.isEmpty()){
-            DURATION_FOR_EACH_FRAME =110;//default duration
-        }else{
-            DURATION_FOR_EACH_FRAME =Integer.parseInt(lastDuration);
+        String lastDuration = SharedPreferencesManager.loadValue(this, SharedPreferencesManager.KEY_DURATION_FOR_EACH_FRAME);
+        if (lastDuration.isEmpty()) {
+            DURATION_FOR_EACH_FRAME = 110;//default duration
+        } else {
+            DURATION_FOR_EACH_FRAME = Integer.parseInt(lastDuration);
         }
         previewFrag = PreviewFrag.newInstance(this, DURATION_FOR_EACH_FRAME);
         previewFrag.setFromActivity(fromActivity);
@@ -191,13 +192,13 @@ public class GifCameraActivity extends BaseActivity implements BaseView, GifCame
 
     @Override
     public void setQuality(int maxSize) {
-        Log.d("malamax",maxSize+"");
+        Log.d("malamax", maxSize + "");
         ((GifCameraPresenter) mPresenter).setPreviewQuality(maxSize);
-        String quality =SharedPreferencesManager.loadValue(this,SharedPreferencesManager.KEY_QUALITY);
-        if(quality.isEmpty()){
-            quality ="2" ;
+        String quality = SharedPreferencesManager.loadValue(this, SharedPreferencesManager.KEY_QUALITY);
+        if (quality.isEmpty()) {
+            quality = "2";
         }
-        ((GifCameraPresenter)mPresenter).setQuality(quality);
+        ((GifCameraPresenter) mPresenter).setQuality(quality);
     }
 
 
@@ -213,7 +214,7 @@ public class GifCameraActivity extends BaseActivity implements BaseView, GifCame
     protected void onResume() {
         super.onResume();
 
-        if(!inPreview){
+        if (!inPreview) {
             showCameraFragment();
         }
 
@@ -221,13 +222,13 @@ public class GifCameraActivity extends BaseActivity implements BaseView, GifCame
 
     @Override
     public void onBackPressed() {
-        if(!inPreview){
+        if (!inPreview) {
             startActivity(new Intent(this, StartActivity.class));
-        }else{
-            Log.d("backback",fromActivity+"");
-            if (fromActivity==Constans.ACTIVITY_GALLERY) {
+        } else {
+            Log.d("backback", fromActivity + "");
+            if (fromActivity == Constans.ACTIVITY_GALLERY) {
                 onBackClicked(Constans.ACTIVITY_GALLERY);
-            } else if(fromActivity==Constans.ACTIVITY_CAMERA){
+            } else if (fromActivity == Constans.ACTIVITY_CAMERA) {
                 onBackClicked(Constans.ACTIVITY_CAMERA);
             }
         }
@@ -235,9 +236,9 @@ public class GifCameraActivity extends BaseActivity implements BaseView, GifCame
 
     @Override
     public void onBackClicked(int fromActivity) {
-        if(fromActivity==Constans.ACTIVITY_CAMERA){
-            ((GifCameraPresenter)mPresenter).startCameraActivity(Constans.FRAG_CAMERA);
-        }else{
+        if (fromActivity == Constans.ACTIVITY_CAMERA) {
+            ((GifCameraPresenter) mPresenter).startCameraActivity(Constans.FRAG_CAMERA);
+        } else {
             startActivity(new Intent(this, GifGalleryActivity.class));
         }
         finish();
@@ -247,6 +248,6 @@ public class GifCameraActivity extends BaseActivity implements BaseView, GifCame
     public void handleGifReady(String uri) {
         gifUri = uri;
         previewFrag.makeGifSharable(uri);
-        ((GifCameraPresenter)mPresenter).saveBitmapsLocally(this,uri);
+        ((GifCameraPresenter) mPresenter).saveBitmapsLocally(this, uri);
     }
 }

@@ -51,6 +51,11 @@ public class AdapterGifGrid extends RecyclerView.Adapter<AdapterGifGrid.ViewHold
         return mData.size();
     }
 
+    public void setdata(List<GifObject> mArrGifs) {
+        mData = mArrGifs;
+        notifyDataSetChanged();
+    }
+
 
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
