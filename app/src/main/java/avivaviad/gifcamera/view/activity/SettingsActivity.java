@@ -348,7 +348,7 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
                 ((SettingsPresenter)mPresenter).onGifGalleryPressed();
                 break;
             case R.id.btn_font_color:
-            //    ((SettingsPresenter)mPresenter).chooseColor(getApplicationContext());
+              ((SettingsPresenter)mPresenter).chooseColor(getApplicationContext());
                 break;
             case R.id.btn_save:
                 saveAllInputs();
