@@ -38,6 +38,7 @@ public class GifCameraActivity extends BaseActivity implements BaseView, GifCame
     private boolean inPreview;
     private PreviewFrag previewFrag;
     private int fromActivity;
+    private boolean cameFromGallary;
 
     @SuppressLint("NewApi")
     @Override
@@ -46,15 +47,18 @@ public class GifCameraActivity extends BaseActivity implements BaseView, GifCame
         setContentView(R.layout.activity_main);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         Bundle extras = getIntent().getExtras();
+        cameFromGallary = (extras.getInt("frag") == Constans.FRAG_PREVIEW);
         handler = new Handler();
-       // ((GifCameraPresenter)mPresenter).setFrameDuration(Integer.parseInt(SharedPreferencesManager.loadValue(this,SharedPreferencesManager.KEY_DURATION_FOR_EACH_FRAME)));
+
+        // ((GifCameraPresenter)mPresenter).setFrameDuration(Integer.parseInt(SharedPreferencesManager.loadValue(this,SharedPreferencesManager.KEY_DURATION_FOR_EACH_FRAME)));
         if (extras != null) {
-            if (extras.getInt("frag") == Constans.FRAG_PREVIEW) {
-                if (!extras.getString("time_stamp").isEmpty()&& !extras.getString("frame_duration").isEmpty()) {
+            if (cameFromGallary) {
+                if (!extras.getString("time_stamp").isEmpty() && !extras.getString("frame_duration").isEmpty()) {
                     String ts = extras.getString("time_stamp");
                     String fd = extras.getString("frame_duration");
                     String uri = extras.getString("gif_uri");
-                    showPreviewLayoutFromGallery(ts, Integer.parseInt(fd),uri);
+                    gifUri = uri;
+                    showPreviewLayoutFromGallery(ts, Integer.parseInt(fd), uri);
                 } else {
                     showPreviewLayout();
                 }
@@ -63,7 +67,7 @@ public class GifCameraActivity extends BaseActivity implements BaseView, GifCame
             }
             fromActivity = extras.getInt("activity");
         }
-      //  ((GifCameraPresenter)mPresenter).setFrameDuration(DURATION_FOR_EACH_FRAME);
+        //  ((GifCameraPresenter)mPresenter).setFrameDuration(DURATION_FOR_EACH_FRAME);
     }
 
 
@@ -143,14 +147,15 @@ public class GifCameraActivity extends BaseActivity implements BaseView, GifCame
         });
     }
 
-    private void showPreviewLayoutFromGallery(final String time_stamp, int frame_duration,final String uri) {
+    private void showPreviewLayoutFromGallery(final String time_stamp, int frame_duration, final String uri) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        previewFrag = PreviewFrag.newInstance(this, frame_duration);
+        previewFrag = PreviewFrag.newInstance(this, frame_duration,cameFromGallary);
         previewFrag.setFromActivity(fromActivity);
         ft.replace(R.id.frame_counter, previewFrag);
         ft.commit();
 
-       // handleGifReady(uri); // put gif src - cause null exception because frag isnt calling onCreateView
+
+        // handleGifReady(uri); // put gif src - cause null exception because frag isnt calling onCreateView
         //!!!! TODO ^
         handler.postDelayed(new Runnable() {
             @Override
@@ -159,6 +164,7 @@ public class GifCameraActivity extends BaseActivity implements BaseView, GifCame
                 GifObject gifObject = RealmHelper.loadGif(time_stamp, realm);
                 ArrayList<Bitmap> bitmaps = ((GifCameraPresenter) mPresenter).convertPathsToBitmaps(gifObject);
                 previewFrag.startImagesPreview(bitmaps);
+
             }
         }, 1000);
         inPreview = true;
@@ -173,8 +179,8 @@ public class GifCameraActivity extends BaseActivity implements BaseView, GifCame
         } else {
             DURATION_FOR_EACH_FRAME = Integer.parseInt(lastDuration);
         }
-        ((GifCameraPresenter)mPresenter).setFrameDuration(DURATION_FOR_EACH_FRAME);
-        previewFrag = PreviewFrag.newInstance(this, DURATION_FOR_EACH_FRAME);// not calling preivewFrag onCreateView
+        ((GifCameraPresenter) mPresenter).setFrameDuration(DURATION_FOR_EACH_FRAME);
+        previewFrag = PreviewFrag.newInstance(this, DURATION_FOR_EACH_FRAME,cameFromGallary);// not calling preivewFrag onCreateView
         previewFrag.setFromActivity(fromActivity);
         ft.replace(R.id.frame_counter, previewFrag);
         ft.commit();
@@ -249,7 +255,10 @@ public class GifCameraActivity extends BaseActivity implements BaseView, GifCame
 
     public void handleGifReady(String uri) {
         gifUri = uri;
-        previewFrag.makeGifSharable(uri);
-        ((GifCameraPresenter) mPresenter).saveBitmapsLocally(this, uri);
+        if (!cameFromGallary) {
+            previewFrag.makeGifSharable();
+            ((GifCameraPresenter) mPresenter).saveBitmapsLocally(this, uri);
+        }
+
     }
 }

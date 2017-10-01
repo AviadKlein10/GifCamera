@@ -27,6 +27,8 @@ public class PreviewFrag extends Fragment implements View.OnClickListener {
     private AnimationDrawable animationDrawable;
     private ProgressBar progressBar;
     ///
+
+    private boolean cameFromGallary;
     private ImageView shareImage, backImage;
     private PreviewCallBack listener;
     private int frame_rate;
@@ -34,6 +36,11 @@ public class PreviewFrag extends Fragment implements View.OnClickListener {
     private Handler handler;
     private Runnable runnebleFade;
     private int fromActivity;
+
+
+    public void setCameFromGallary(boolean cameFromGallary) {
+        this.cameFromGallary = cameFromGallary;
+    }
 
     public int getFromActivity() {
         return fromActivity;
@@ -51,10 +58,11 @@ public class PreviewFrag extends Fragment implements View.OnClickListener {
         this.frame_rate = frame_rate;
     }
 
-    public static PreviewFrag newInstance(PreviewCallBack cameraFragCallBack, int frame_rate) {
+    public static PreviewFrag newInstance(PreviewCallBack cameraFragCallBack, int frame_rate,boolean cameFromGallary) {
         PreviewFrag previewFrag = new PreviewFrag();
         previewFrag.setFrame_rate(frame_rate);
         previewFrag.setListener(cameraFragCallBack);
+        previewFrag.setCameFromGallary(cameFromGallary);
         return previewFrag;
     }
 
@@ -85,6 +93,9 @@ public class PreviewFrag extends Fragment implements View.OnClickListener {
         fadeInButtonShare();
         shareImage.setEnabled(false);
 
+        if(cameFromGallary){
+            makeGifSharable();
+        }
         return v;
     }
 
@@ -131,9 +142,9 @@ public class PreviewFrag extends Fragment implements View.OnClickListener {
         animationDrawable.start();
     }
 
-    public void makeGifSharable(String uri) {
+    public void makeGifSharable() {
 
-        handler.removeCallbacks(runnebleFade);
+        handler.post(runnebleFade);
         progressBar.setVisibility(View.INVISIBLE);
         shareImage.setAlpha(1f);
         shareImage.setEnabled(true);
