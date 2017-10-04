@@ -2,12 +2,11 @@ package avivaviad.gifcamera.view.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.os.Build;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.ColorInt;
@@ -48,14 +47,13 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
     private static final int READ_RC_SMALL_IMG = 41, READ_RC_FRAME = 42;
     private EditText edit_duration_for_each_frame, edit_capture_frame_rate,
             edit_frame_count, edit_title, edit_tag_db;
-    private Spinner spinner_quality, spinner_font, spinner_font_size, spinner_color;
+    private Spinner spinner_quality, spinner_font, spinner_font_size;
     private Button btn_add_frame, btn_add_image,btn_gif_gallery,btn_save,btn_font_color;
     private CheckBox checkBoxAddFrame, checkBoxAddImage;
     private ImageView img_frame, img_small;
     private ColorPicker cp= null;
-    private int[] arrFontColors = {Color.GREEN, Color.MAGENTA, Color.YELLOW, Color.RED, Color.BLUE,Color.DKGRAY};
-    private int[] arrFontSize = {18, 20, 22, 24, 26, 28, 30};
-    private String[] arrFontType = {"GothamRounded-Bold.otf", "Grange.ttf", "a.ttf"};
+    private int[] arrFontSize = {18, 22, 26, 30, 34, 38, 42};
+    private String[] arrFontType = {"varelaRound.ttf", "anka.ttf", "dorian.ttf", "makabi.ttf", "noot.otf"};
     private Context context;
 
     @SuppressLint("NewApi")
@@ -102,34 +100,7 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
 
 
 
-       /* EditText.OnEditorActionListener editorActionListener = new EditText.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                Log.d("Value:" + v.getId() + " saved successfully", "Whaay");
-
-                switch (v.getId()) {
-
-                    case R.id.edit_duration_for_each_frame:
-                        saveValue(SharedPreferencesManager.KEY_DURATION_FOR_EACH_FRAME, v.getText());
-                        break;
-                    case R.id.edit_frame_count:
-                        saveValue(SharedPreferencesManager.KEY_FRAME_COUNT, v.getText());
-                        break;
-                    case R.id.edit_title:
-                        saveValue(SharedPreferencesManager.KEY_TITLE, v.getText());
-                        break;
-                    case R.id.edit_capture_frame_rate:
-                        saveValue(SharedPreferencesManager.KEY_CAPTURE_FRAME_RATE, v.getText());
-                        break;
-                    case R.id.edit_tag_db:
-                        saveValue(SharedPreferencesManager.KEY_DB_TAG, v.getText());
-                        break;
-                }
-
-                return true;
-            }
-        };
-        edit_duration_for_each_frame.setOnEditorActionListener(editorActionListener);
+       /* edit_duration_for_each_frame.setOnEditorActionListener(editorActionListener);
         edit_frame_count.setOnEditorActionListener(editorActionListener);
         edit_title.setOnEditorActionListener(editorActionListener);
         edit_capture_frame_rate.setOnEditorActionListener(editorActionListener);
@@ -137,9 +108,8 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
 
 
         String[] quality = new String[]{"low", "medium", "high"};
-        String[] fontSize = new String[]{"18", "22", "24", "26", "28", "30"};
-        String[] fontType = new String[]{"font abc", "font abc", "font abc"};
-        String[] fontColor = new String[]{"  ", "  ", "  ", "  ", "  ", "  "};
+        String[] fontSize = new String[]{"18", "22", "26", "30", "34", "38", "42"};
+        String[] fontType = new String[]{"ורלה", "אנקה", "דוריאן", "מכבי", "נוט"};
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, quality);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinner_quality.setAdapter(spinnerAdapter);
@@ -167,36 +137,20 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
 
          cp = new ColorPicker(this, 50, 50, 50, 50);
 
+
     /* Set a new Listener called when user click "select" */
+
+
         cp.setCallback(new ColorPickerCallback() {
             @Override
             public void onColorChosen(@ColorInt int color) {
                 // Do whatever you want
                 // Examples
                 SharedPreferencesManager.saveValue(getApplicationContext(),SharedPreferencesManager.KEY_FONT_COLOR, String.valueOf(color));
+                Log.d("colorcolor",color+"");
                 cp.cancel();
             }
         });
-
-       /* spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, fontColor) {
-            @NonNull
-            @Override
-            public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-                View v = super.getView(position, convertView, parent);
-                v.setBackgroundColor(arrFontColors[position]);
-                return v;
-            }
-
-            public View getDropDownView(int position, View convertView, @NonNull ViewGroup parent) {
-                View v = superz.getView(position, convertView, parent);
-                v.setBackgroundColor(arrFontColors[position]);
-                return v;
-            }
-        };
-
-        spinner_color.setAdapter(spinnerAdapter);
-        spinner_color.setSelection(0);
-        spinner_color.setOnItemSelectedListener(this);*/
 
         spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, fontSize);
         spinner_font_size.setAdapter(spinnerAdapter);
@@ -239,9 +193,10 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
                 case "6":
                     spinner_font.setSelection(Integer.parseInt(loadedValue));
                     break;
-                /*case "7":
-                    spinner_color.setSelection(Integer.parseInt(loadedValue));
-                    break;*/
+                case "7":
+                    int color = (Color.parseColor(loadedValue));
+                    cp = new ColorPicker(this,Color.red(color),Color.green(color),Color.blue(color));
+                    break;
                 case "8":
                     checkBoxAddFrame.setChecked(isChecked(loadedValue));
                     break;
@@ -378,40 +333,28 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
         imageIntent.addCategory(Intent.CATEGORY_OPENABLE);
         imageIntent.setType("image*//*");
         imageIntent.setAction(Intent.ACTION_GET_CONTENT);*/
+        // intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         Intent intent;
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
-           // intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-            intent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+            intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
             intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-        }else{
-            intent = new Intent(Intent.ACTION_GET_CONTENT);
-        }
+
         intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intent.setType("image/*");
-
-        startActivityForResult(intent, REQUEST_CODE);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQUEST_CODE);
+      //  startActivityForResult(intent, REQUEST_CODE);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
       //  if (resultCode == Activity.RESULT_OK && data.getData()!=null & requestCode == READ_RC_SMALL_IMG || requestCode == READ_RC_FRAME) {
         if(resultCode == Activity.RESULT_OK && data.getData()!=null){
-            Log.d("urithd", data.getData() + "");
-            Log.d("urithp", data.getData().getPath() + "");
-
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                int takeFlags = data.getFlags();
-                takeFlags &= Intent.FLAG_GRANT_READ_URI_PERMISSION & Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
-                ContentResolver resolver = getApplicationContext().getContentResolver();
-
-                    resolver.takePersistableUriPermission(data.getData(), takeFlags);
-
-            }
-
+            final int takeFlags = data.getFlags() & Intent.FLAG_GRANT_READ_URI_PERMISSION;
+            //ContentResolver resolver = ;
+                this.getContentResolver().takePersistableUriPermission(data.getData(), takeFlags);
             saveAndDisplayImg(requestCode, data.getDataString());
-
         }
     }
 

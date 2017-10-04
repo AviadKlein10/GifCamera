@@ -1,10 +1,8 @@
 package avivaviad.gifcamera.view.activity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -18,6 +16,7 @@ import java.util.List;
 
 import avivaviad.gifcamera.R;
 import avivaviad.gifcamera.RealmHelper;
+import avivaviad.gifcamera.custom.dialog.DialogFragmentDelete;
 import avivaviad.gifcamera.model.AdapterGifGrid;
 import avivaviad.gifcamera.model.GifObject;
 import avivaviad.gifcamera.presenter.BaseView;
@@ -31,7 +30,7 @@ import io.realm.RealmResults;
  * Created by Aviad on 25/09/2017.
  */
 
-public class GifGalleryActivity extends BaseActivity implements GifGalleryPresenter.GifGallaryListener, AdapterGifGrid.ItemClickListener, AdapterGifGrid.ItemLongClickListener, BaseView, TextWatcher {
+public class GifGalleryActivity extends BaseActivity implements GifGalleryPresenter.GifGallaryListener, AdapterGifGrid.ItemClickListener, AdapterGifGrid.ItemLongClickListener, BaseView, TextWatcher,DialogFragmentDelete.YesNoDialogListener {
 
     private AdapterGifGrid adapter;
     private List<GifObject> mArrGifs;
@@ -78,6 +77,15 @@ public class GifGalleryActivity extends BaseActivity implements GifGalleryPresen
 
 
     private void buildAlertDialog(final int position) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        DialogFragmentDelete yesnoDialog = new DialogFragmentDelete();
+        yesnoDialog.setPosition(position);
+        yesnoDialog.setCancelable(false);
+        yesnoDialog.setDialogTitle("Select One");
+        yesnoDialog.show(fragmentManager, "Yes/No Dialog");
+
+
+         /*
      AlertDialog  alertDialog =  new AlertDialog.Builder(GifGalleryActivity.this)
                 .setTitle("מחיקת פריט")
                 .setMessage("האם אתה בטוח שברצונך למחוק את קובץ הGIF?")
@@ -93,8 +101,17 @@ public class GifGalleryActivity extends BaseActivity implements GifGalleryPresen
                 .create();
         alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
-        alertDialog.show();
+        alertDialog.show();*/
+
     }
+
+    @Override
+    public void onFinishYesNoDialog(boolean state, int position) {
+        // -- Finish dialog box show msg
+        RealmHelper.removeGif(mArrGifs.get(position).getmGifSrc(), Realm.getDefaultInstance());
+        adapter.notifyDataSetChanged();
+    }
+
 
     @Override
     public void onItemClick(View view, int position) {

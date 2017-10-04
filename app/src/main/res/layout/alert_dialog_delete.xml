@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="האם אתה בטוח רוצה לחמוק פריט זה"
+        android:textSize="20dp"/>
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
+
+        <Button
+            android:id="@+id/btnYes"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:text="כן"
+            android:background="#00CC66"
+            android:textColor="#fff"
+            android:textStyle="bold"
+            android:layout_margin="5dp"/>
+
+        <Button
+            android:id="@+id/btnNo"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:text="לא"
+            android:background="#FF3333"
+            android:textColor="#fff"
+            android:textStyle="bold"
+            android:layout_margin="5dp" />
+    </LinearLayout>
+</LinearLayout>

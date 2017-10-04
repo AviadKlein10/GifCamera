@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.util.Log;
 
 import java.io.File;
@@ -52,14 +53,30 @@ public class GifCameraPresenter extends Presenter<GifCameraActivity> implements 
         String srcFrame =SharedPreferencesManager.loadValue(context,SharedPreferencesManager.KEY_FRAME_SRC);
         boolean cbAddFrame = (SharedPreferencesManager.loadValue(context,SharedPreferencesManager.KEY_CHECK_ADD_FRAME)).contains("true");
         for (int i = 0; i < previewBitmaps.size(); i++) {
-            if (cbAddFrame){
-                previewBitmaps.set(i,BitmapEditing.addFrame(context,previewBitmaps.get(i), srcFrame));
+            if (!cbAddFrame){//TODO need to change if - test
+                addFrameAndTextToBitmaps(context,i,srcFrame);
+
+                //  bitmap = BitmapEditing.drawTextToBitmap(context,bitmap,title,fontType,fontSize, Color.parseColor(fontColor));
+              //  gifBitmaps.set(i,BitmapEditing.addFrame(context,previewBitmaps.get(i), srcFrame));
             }else{
                // previewBitmaps.set(i,previewBitmaps.get(i));
             }
         }
        // Realm realm = Realm.getDefaultInstance();
        // RealmHelper.saveGifPreviewBitmaps(previewBitmaps,realm);
+    }
+
+    private void addFrameAndTextToBitmaps(Context context, int i, String srcFrame) {
+        String[] arrFontType = {"varelaRound.ttf", "anka.ttf", "dorian.ttf", "makabi.ttf", "noot.otf"};
+        int[] arrFontSize = {18, 22, 26, 30, 34, 38, 42};
+
+        String title = SharedPreferencesManager.loadValue(context,SharedPreferencesManager.KEY_TITLE);
+        String fontType = arrFontType[Integer.parseInt(SharedPreferencesManager.loadValue(context,SharedPreferencesManager.KEY_FONT_TYPE))];
+        int fontSize = arrFontSize[Integer.parseInt(SharedPreferencesManager.loadValue(context,SharedPreferencesManager.KEY_FONT_SIZE))];
+        String fontColor = SharedPreferencesManager.loadValue(context,SharedPreferencesManager.KEY_FONT_COLOR);//TODO fix load font color
+        previewBitmaps.set(i,BitmapEditing.addFrame(context,BitmapEditing.drawTextToBitmap(context,previewBitmaps.get(i),title,fontType,fontSize, Color.parseColor(fontColor)), srcFrame));
+       // gifBitmaps.set(i,BitmapEditing.addFrame(context,BitmapEditing.drawTextToBitmap(context,previewBitmaps.get(i),title,fontType,fontSize, Color.parseColor(fontColor)), srcFrame));
+
     }
 
     public GifCameraPresenter() {
@@ -85,16 +102,17 @@ public class GifCameraPresenter extends Presenter<GifCameraActivity> implements 
     }
 
     public void takePicture(Bitmap bitmap,Context context) {
-
-       // previewBitmaps.add(Utils.getResizedBitmap(bitmap, CameraFrag.maxSize));
-        // gifBitmaps.add(Utils.getResizedBitmap(bitmap, 600));
-        String title = SharedPreferencesManager.loadValue(context,SharedPreferencesManager.KEY_TITLE);
-        String fontType = SharedPreferencesManager.loadValue(context,SharedPreferencesManager.KEY_FONT_TYPE);
-        int fontSize = Integer.parseInt(SharedPreferencesManager.loadValue(context,SharedPreferencesManager.KEY_FONT_SIZE));
-        String fontColor = SharedPreferencesManager.loadValue(context,SharedPreferencesManager.KEY_FONT_COLOR);//TODO fix load font color
-
-      //  bitmap = BitmapEditing.drawTextToBitmap(context,bitmap,title,fontType,fontSize,fontColor);
-    //  bitmap =  BitmapEditing.addFrame(context,bitmap, R.drawable.green_frame);
+     //  int[] arrFontSize = {18, 22, 26, 30, 34, 38, 42};
+     //  String[] arrFontType = {"varelaRound.ttf", "anka.ttf", "dorian.ttf", "makabi.ttf", "noot.otf"};
+     // // previewBitmaps.add(Utils.getResizedBitmap(bitmap, CameraFrag.maxSize));
+     //  // gifBitmaps.add(Utils.getResizedBitmap(bitmap, 600));
+     //  String title = SharedPreferencesManager.loadValue(context,SharedPreferencesManager.KEY_TITLE);
+     //  String fontType = arrFontType[Integer.parseInt(SharedPreferencesManager.loadValue(context,SharedPreferencesManager.KEY_FONT_TYPE))];
+     //  int fontSize = arrFontSize[Integer.parseInt(SharedPreferencesManager.loadValue(context,SharedPreferencesManager.KEY_FONT_SIZE))];
+     //  String fontColor = SharedPreferencesManager.loadValue(context,SharedPreferencesManager.KEY_FONT_COLOR);//TODO fix load font color
+        //TODO האם יש טקסט בלי מסגרת
+      //  bitmap = BitmapEditing.drawTextToBitmap(context,bitmap,title,fontType,fontSize, Color.parseColor(fontColor));
+       // bitmap =  BitmapEditing.addFrame(context,bitmap, SharedPreferencesManager.loadValue(context,SharedPreferencesManager.KEY_FRAME_SRC));
         previewBitmaps.add(Utils.getResizedBitmap(bitmap, previewQuality));
         Log.d("aniPres",CameraFrag.maxSize+"");
         gifBitmaps.add(Utils.getResizedBitmap(bitmap, gifQuality));

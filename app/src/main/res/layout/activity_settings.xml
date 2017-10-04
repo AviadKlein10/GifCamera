@@ -15,7 +15,8 @@
             android:id="@+id/capture_frame_rate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Capture frame rate:"
+            android:text="Capture frame rate:
+מומלץ בין450 ל1000"
             android:textColor="#ffffff"
             android:textSize="30sp" />
 
@@ -24,31 +25,33 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_marginBottom="15dp"
             android:background="@android:color/darker_gray"
             android:padding="10dp"
             android:text="Default"
             android:textColor="#ffffff"
-            android:textSize="26sp"
-            android:layout_marginBottom="15dp"/>
+            android:textSize="26sp" />
+
         <Button
             android:id="@+id/btn_gif_gallery"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:background="@android:color/darker_gray"
             android:layout_below="@id/btn_default_settings"
+            android:layout_marginBottom="15dp"
+            android:background="@android:color/darker_gray"
             android:padding="10dp"
             android:text="Gif Gallery"
             android:textColor="#ffffff"
-            android:textSize="26sp"
-            android:layout_marginBottom="15dp"/>
+            android:textSize="26sp" />
+
         <Button
             android:id="@+id/btn_save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:background="@android:color/darker_gray"
             android:layout_below="@id/btn_gif_gallery"
+            android:background="@android:color/darker_gray"
             android:padding="10dp"
             android:text="SAVE"
             android:textColor="#ffffff"
@@ -65,9 +68,10 @@
             android:inputType="number"
             android:lines="1"
             android:maxLines="1"
+            android:singleLine="true"
             android:textColor="#ffffff"
             android:textColorHint="@android:color/darker_gray"
-            android:textSize="26sp"/>
+            android:textSize="26sp" />
 
 
         <TextView
@@ -76,7 +80,8 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/edit_capture_frame_rate"
             android:layout_below="@+id/edit_capture_frame_rate"
-            android:text="Display duration of each frame:"
+            android:text="Duration of each frame:
+מומלץ בין 80 ל220"
             android:textColor="#ffffff"
             android:textSize="30sp" />
 
@@ -91,6 +96,7 @@
             android:inputType="number"
             android:lines="1"
             android:maxLines="1"
+            android:singleLine="true"
             android:textColor="#ffffff"
             android:textColorHint="@android:color/darker_gray"
             android:textSize="26sp" />
@@ -101,7 +107,8 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/edit_duration_for_each_frame"
             android:layout_below="@+id/edit_duration_for_each_frame"
-            android:text="Frame count:"
+            android:text="Frame count:
+מומלץ בין 4 ל22"
             android:textColor="#ffffff"
             android:textSize="30sp" />
 
@@ -116,6 +123,7 @@
             android:inputType="number"
             android:lines="1"
             android:maxLines="1"
+            android:singleLine="true"
             android:textColor="#ffffff"
             android:textColorHint="@android:color/darker_gray"
             android:textSize="26sp" />
@@ -143,10 +151,11 @@
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/spinner_quality"
             android:text="Text on GIF:"
             android:textColor="#ffffff"
-            android:textSize="30sp"
-            android:layout_below="@+id/spinner_quality" />
+            android:textSize="30sp" />
+
         <EditText
             android:id="@+id/edit_title"
             android:layout_width="match_parent"
@@ -154,11 +163,12 @@
             android:layout_alignStart="@+id/title"
             android:layout_below="@+id/title"
             android:layout_marginRight="30dp"
-            android:hint="text"
+            android:hint="טקסט"
             android:imeOptions="actionDone"
             android:inputType="text"
             android:lines="1"
             android:maxLines="1"
+            android:singleLine="true"
             android:tag="tag_title"
             android:textColor="#ffffff"
             android:textColorHint="@android:color/darker_gray"
@@ -212,16 +222,16 @@
 
         <Button
             android:id="@+id/btn_font_color"
-            android:text="Pick color"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/btn_default_settings"
+            android:layout_below="@+id/font_color"
+            android:layout_marginStart="14dp"
+
             android:background="@android:color/darker_gray"
             android:padding="10dp"
-
-            android:textColor="#ffffff"
-            android:layout_below="@+id/font_color"
-            android:layout_alignStart="@+id/btn_default_settings"
-            android:layout_marginStart="14dp" />
+            android:text="Pick color"
+            android:textColor="#ffffff" />
 
 
         <TextView
@@ -230,11 +240,11 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/spinner_font"
             android:paddingBottom="20dp"
+            android:paddingRight="10dp"
+            android:paddingTop="20dp"
             android:text="Add frame:"
             android:textColor="#ffffff"
-            android:textSize="30sp"
-            android:paddingRight="10dp"
-            android:paddingTop="20dp" />
+            android:textSize="30sp" />
 
         <Button
             android:id="@+id/btn_add_frame"
@@ -250,14 +260,14 @@
 
         <CheckBox
             android:id="@+id/checkbox_frame"
+            style="@android:style/Widget.Holo.CompoundButton.CheckBox"
             android:layout_width="wrap_content"
-            android:enabled="false"
 
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/add_frame"
             android:layout_alignBaseline="@+id/add_frame"
-            style="@android:style/Widget.Holo.CompoundButton.CheckBox"
-            android:buttonTint="@android:color/holo_blue_dark" />
+            android:layout_toRightOf="@+id/add_frame"
+            android:buttonTint="@android:color/holo_blue_dark"
+            android:enabled="false" />
 
         <TextView
             android:id="@+id/add_image"
@@ -265,11 +275,11 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/btn_add_frame"
             android:paddingBottom="20dp"
+            android:paddingRight="10dp"
+            android:paddingTop="20dp"
             android:text="Add image:"
             android:textColor="#ffffff"
-            android:textSize="30sp"
-            android:paddingTop="20dp"
-            android:paddingRight="10dp"/>
+            android:textSize="30sp" />
 
         <Button
             android:id="@+id/btn_add_image"
@@ -279,20 +289,19 @@
             android:layout_below="@+id/add_image"
             android:background="@android:color/darker_gray"
             android:padding="10dp"
+            android:paddingBottom="20dp"
             android:text="Choose"
             android:textColor="#ffffff"
-            android:textSize="26sp"
-            android:paddingBottom="20dp"/>
+            android:textSize="26sp" />
 
         <CheckBox
-            android:enabled="false"
             android:id="@+id/checkbox_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/add_image"
             android:layout_alignBaseline="@+id/add_image"
-            android:buttonTint="@android:color/holo_blue_dark" />
-
+            android:layout_toRightOf="@+id/add_image"
+            android:buttonTint="@android:color/holo_blue_dark"
+            android:enabled="false" />
 
 
         <TextView
@@ -301,10 +310,10 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/btn_add_image"
             android:layout_below="@+id/btn_add_image"
+            android:paddingTop="20dp"
             android:text="Tag title for DB:"
             android:textColor="#ffffff"
-            android:textSize="30sp"
-            android:paddingTop="20dp"/>
+            android:textSize="30sp" />
 
         <EditText
             android:id="@+id/edit_tag_db"
@@ -316,27 +325,28 @@
             android:imeOptions="actionDone"
             android:lines="1"
             android:maxLines="1"
+            android:singleLine="true"
             android:textColor="#ffffff"
             android:textColorHint="@android:color/darker_gray"
             android:textSize="26sp" />
 
         <ImageView
-            android:layout_width="100dp"
-            app:srcCompat="@drawable/green_frame"
-            android:layout_alignTop="@+id/checkbox_frame"
-            android:layout_toEndOf="@+id/tag_db"
-            android:layout_marginStart="34dp"
             android:id="@+id/img_frame"
-            android:layout_height="100dp" />
-
-        <ImageView
             android:layout_width="100dp"
             android:layout_height="100dp"
-            app:srcCompat="@drawable/gif_bg_2"
-            android:layout_alignTop="@+id/checkbox_image"
+            android:layout_alignTop="@+id/checkbox_frame"
+            android:layout_marginStart="34dp"
+            android:layout_toEndOf="@+id/tag_db"
+            app:srcCompat="@drawable/green_frame" />
+
+        <ImageView
+            android:id="@+id/img_small"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_alignStart="@+id/img_frame"
+            android:layout_alignTop="@+id/checkbox_image"
             android:layout_marginTop="16dp"
-            android:id="@+id/img_small" />
+            app:srcCompat="@drawable/gif_bg_2" />
 
     </RelativeLayout>
 </ScrollView>
