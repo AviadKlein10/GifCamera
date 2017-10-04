@@ -53,7 +53,7 @@ public class GifCameraPresenter extends Presenter<GifCameraActivity> implements 
         String srcFrame =SharedPreferencesManager.loadValue(context,SharedPreferencesManager.KEY_FRAME_SRC);
         boolean cbAddFrame = (SharedPreferencesManager.loadValue(context,SharedPreferencesManager.KEY_CHECK_ADD_FRAME)).contains("true");
         for (int i = 0; i < previewBitmaps.size(); i++) {
-            if (!cbAddFrame){//TODO need to change if - test
+            if (cbAddFrame){//TODO - test
                 addFrameAndTextToBitmaps(context,i,srcFrame);
 
                 //  bitmap = BitmapEditing.drawTextToBitmap(context,bitmap,title,fontType,fontSize, Color.parseColor(fontColor));
