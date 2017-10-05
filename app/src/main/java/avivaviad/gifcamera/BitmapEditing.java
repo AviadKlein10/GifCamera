@@ -123,9 +123,7 @@ public class BitmapEditing {
         // so we need to convert it to mutable one
         bitmap = bitmap.copy(bitmapConfig, true);
 
-        //  Bitmap border = BitmapFactory.decodeResource(context.getResources(), rscFrame);
-        // Bitmap border = BitmapFactory.decodeStream(context.getResources(), rscFrame);
-        Bitmap border = null;
+        Bitmap smallImg = null;
         InputStream image_stream = null;
         Uri uri = Uri.parse(srcFrame);
         try {
@@ -137,7 +135,7 @@ public class BitmapEditing {
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig= Bitmap.Config.ARGB_8888;
 
-        border= BitmapFactory.decodeStream(image_stream,null,options ); // TODO option to insert png
+        smallImg= BitmapFactory.decodeStream(image_stream,null,options ); // TODO option to insert png
        /* FileOutputStream out = null;
             try {
              out = new FileOutputStream(srcFrame);
@@ -145,21 +143,25 @@ public class BitmapEditing {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }*/
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+     //  ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-        border.compress(Bitmap.CompressFormat.PNG,100,baos);
+     //  smallImg.compress(Bitmap.CompressFormat.PNG,100,baos);
 
-        border = border.copy(bitmapConfig, true);
-        border.setHasAlpha(true);
+     //  smallImg = smallImg.copy(bitmapConfig, true);
+
 
 
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
+        Paint paint = new Paint();
+        paint.setFilterBitmap(true);
+        Matrix matrix = new Matrix();
+        matrix.postScale(0,height- smallImg.getHeight()/4);
 
-        Bitmap change = Bitmap.createScaledBitmap(border, 80, 80, false);
+        Bitmap change = Bitmap.createScaledBitmap(bitmap, width, height, true);
         Canvas canvas = new Canvas(change);
-        Bitmap scaledBorder = Bitmap.createScaledBitmap(bitmap,width,height, false);
-        canvas.drawBitmap(scaledBorder, 0, height ,null);
+        Bitmap scaledBorder = Bitmap.createScaledBitmap(smallImg, (int) (smallImg.getWidth()/1.5), (int) (smallImg.getHeight()/1.5), true);
+        canvas.drawBitmap(scaledBorder, 0, (float) (height-(smallImg.getHeight()/1.5)),paint);
         return change;
     }
 

@@ -2,14 +2,13 @@ package avivaviad.gifcamera.view.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
@@ -27,8 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.pes.androidmaterialcolorpickerdialog.ColorPicker;
-import com.pes.androidmaterialcolorpickerdialog.ColorPickerCallback;
+import com.github.danielnilsson9.colorpickerview.dialog.ColorPickerDialogFragment;
 
 import java.util.HashMap;
 
@@ -43,18 +41,18 @@ import avivaviad.gifcamera.view.BaseActivity;
  * Created by Aviad on 14/08/2017.
  */
 
-public class SettingsActivity extends BaseActivity implements BaseView, SettingsPresenter.SettingsPresenterCallBack, AdapterView.OnItemSelectedListener, View.OnClickListener,CompoundButton.OnCheckedChangeListener {
+public class SettingsActivity extends BaseActivity implements BaseView, SettingsPresenter.SettingsPresenterCallBack, AdapterView.OnItemSelectedListener, View.OnClickListener, CompoundButton.OnCheckedChangeListener,ColorPickerDialogFragment.ColorPickerDialogListener {
     private static final int READ_RC_SMALL_IMG = 41, READ_RC_FRAME = 42;
     private EditText edit_duration_for_each_frame, edit_capture_frame_rate,
             edit_frame_count, edit_title, edit_tag_db;
     private Spinner spinner_quality, spinner_font, spinner_font_size;
-    private Button btn_add_frame, btn_add_image,btn_gif_gallery,btn_save,btn_font_color;
+    private Button btn_add_frame, btn_add_image, btn_gif_gallery, btn_save, btn_font_color;
     private CheckBox checkBoxAddFrame, checkBoxAddImage;
     private ImageView img_frame, img_small;
-    private ColorPicker cp= null;
     private int[] arrFontSize = {18, 22, 26, 30, 34, 38, 42};
     private String[] arrFontType = {"varelaRound.ttf", "anka.ttf", "dorian.ttf", "makabi.ttf", "noot.otf"};
     private Context context;
+    private ColorPickerDialogFragment colorPickerDialogFragment;
 
     @SuppressLint("NewApi")
     @Override
@@ -62,7 +60,7 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        context=  getApplicationContext();
+        context = getApplicationContext();
         initViews();
         loadViewLastSettings();
 
@@ -120,13 +118,13 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
             @Override
             public View getView(int position, View convertView, @NonNull ViewGroup parent) {
                 View v = super.getView(position, convertView, parent);
-                ((TextView) v).setTypeface(Typeface.createFromAsset(getAssets(), "fonts/"+arrFontType[position]));
+                ((TextView) v).setTypeface(Typeface.createFromAsset(getAssets(), "fonts/" + arrFontType[position]));
                 return v;
             }
 
             public View getDropDownView(int position, View convertView, @NonNull ViewGroup parent) {
                 View v = super.getView(position, convertView, parent);
-                ((TextView) v).setTypeface(Typeface.createFromAsset(getAssets(), "fonts/"+arrFontType[position]));
+                ((TextView) v).setTypeface(Typeface.createFromAsset(getAssets(), "fonts/" + arrFontType[position]));
                 return v;
             }
         };
@@ -134,23 +132,12 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
         spinner_font.setAdapter(spinnerAdapter);
         spinner_font.setSelection(0);
         spinner_font.setOnItemSelectedListener(this);
+         colorPickerDialogFragment = ColorPickerDialogFragment
+                .newInstance(0, null, null, Color.BLACK, true);
 
-         cp = new ColorPicker(this, 50, 50, 50, 50);
+        colorPickerDialogFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.LightPickerDialogTheme);
 
 
-    /* Set a new Listener called when user click "select" */
-
-
-        cp.setCallback(new ColorPickerCallback() {
-            @Override
-            public void onColorChosen(@ColorInt int color) {
-                // Do whatever you want
-                // Examples
-                SharedPreferencesManager.saveValue(getApplicationContext(),SharedPreferencesManager.KEY_FONT_COLOR, String.valueOf(color));
-                Log.d("colorcolor",color+"");
-                cp.cancel();
-            }
-        });
 
         spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, fontSize);
         spinner_font_size.setAdapter(spinnerAdapter);
@@ -194,8 +181,11 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
                     spinner_font.setSelection(Integer.parseInt(loadedValue));
                     break;
                 case "7":
-                    int color = (Color.parseColor(loadedValue));
-                    cp = new ColorPicker(this,Color.red(color),Color.green(color),Color.blue(color));
+                   // int color = (Color.parseColor(loadedValue));
+                    colorPickerDialogFragment = ColorPickerDialogFragment
+                            .newInstance(0, "ok", null, Integer.parseInt(loadedValue), true);
+
+                    colorPickerDialogFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.DarkPickerDialogTheme);
                     break;
                 case "8":
                     checkBoxAddFrame.setChecked(isChecked(loadedValue));
@@ -208,7 +198,7 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
                         public void run() {
                             Glide.with(getApplicationContext()).load(finalLoadedValue).into(img_frame);
                         }
-                    },120);
+                    }, 120);
                     break;
                 case "10":
                     checkBoxAddImage.setChecked(isChecked(loadedValue));
@@ -220,7 +210,8 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
                         public void run() {
                             Glide.with(getApplicationContext()).load(finalLoadedValue2).into(img_small);
                         }
-                    },120);                    break;
+                    }, 120);
+                    break;
                 case "12":
                     edit_tag_db.setText(loadedValue);
                     break;
@@ -284,18 +275,17 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
     }
 
 
-
     private void saveAllInputs() {
         saveValue(SharedPreferencesManager.KEY_DURATION_FOR_EACH_FRAME, edit_duration_for_each_frame.getText());
         saveValue(SharedPreferencesManager.KEY_TITLE, edit_title.getText());
         saveValue(SharedPreferencesManager.KEY_CAPTURE_FRAME_RATE, edit_capture_frame_rate.getText());
         saveValue(SharedPreferencesManager.KEY_DB_TAG, edit_tag_db.getText());
-        if(!edit_frame_count.getText().toString().trim().isEmpty()){
-            if (Integer.parseInt(edit_frame_count.getText().toString())<2){
+        if (!edit_frame_count.getText().toString().trim().isEmpty()) {
+            if (Integer.parseInt(edit_frame_count.getText().toString()) < 2) {
                 Toast.makeText(this, "Minimum frame count is 2\nSaved successfully", Toast.LENGTH_LONG).show();
                 saveValue(SharedPreferencesManager.KEY_FRAME_COUNT, "2");
                 edit_frame_count.setText("2");
-            }else{
+            } else {
                 saveValue(SharedPreferencesManager.KEY_FRAME_COUNT, edit_frame_count.getText());
                 Toast.makeText(this, "Saved successfully", Toast.LENGTH_LONG).show();
             }
@@ -317,10 +307,10 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
                 loadViewLastSettings();
                 break;
             case R.id.btn_gif_gallery:
-                ((SettingsPresenter)mPresenter).onGifGalleryPressed();
+                ((SettingsPresenter) mPresenter).onGifGalleryPressed();
                 break;
             case R.id.btn_font_color:
-                 cp.show();
+                colorPickerDialogFragment.show(getFragmentManager(), "d");
                 break;
             case R.id.btn_save:
                 saveAllInputs();
@@ -336,24 +326,24 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
         // intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         Intent intent;
 
-            intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-            intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+        intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
 
         intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intent.setType("image/*");
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQUEST_CODE);
-      //  startActivityForResult(intent, REQUEST_CODE);
+        //  startActivityForResult(intent, REQUEST_CODE);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-      //  if (resultCode == Activity.RESULT_OK && data.getData()!=null & requestCode == READ_RC_SMALL_IMG || requestCode == READ_RC_FRAME) {
-        if(resultCode == Activity.RESULT_OK && data.getData()!=null){
+        //  if (resultCode == Activity.RESULT_OK && data.getData()!=null & requestCode == READ_RC_SMALL_IMG || requestCode == READ_RC_FRAME) {
+        if (resultCode == Activity.RESULT_OK && data.getData() != null) {
             final int takeFlags = data.getFlags() & Intent.FLAG_GRANT_READ_URI_PERMISSION;
             //ContentResolver resolver = ;
-                this.getContentResolver().takePersistableUriPermission(data.getData(), takeFlags);
+            this.getContentResolver().takePersistableUriPermission(data.getData(), takeFlags);
             saveAndDisplayImg(requestCode, data.getDataString());
         }
     }
@@ -377,15 +367,25 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        switch(buttonView.getId()){
+        switch (buttonView.getId()) {
             case R.id.checkbox_frame:
-                Log.d("istrue",isChecked+"");
-                SharedPreferencesManager.saveValue(context,SharedPreferencesManager.KEY_CHECK_ADD_FRAME,isChecked+"");
+                Log.d("istrue", isChecked + "");
+                SharedPreferencesManager.saveValue(context, SharedPreferencesManager.KEY_CHECK_ADD_FRAME, isChecked + "");
                 break;
             case R.id.checkbox_image:
-                Log.d("istrue",isChecked+"");
-                SharedPreferencesManager.saveValue(context,SharedPreferencesManager.KEY_CHECK_ADD_IMAGE,isChecked+"");
+                Log.d("istrue", isChecked + "");
+                SharedPreferencesManager.saveValue(context, SharedPreferencesManager.KEY_CHECK_ADD_IMAGE, isChecked + "");
                 break;
         }
+    }
+
+    @Override
+    public void onColorSelected(int dialogId, int color) {
+        SharedPreferencesManager.saveValue(context,SharedPreferencesManager.KEY_FONT_COLOR,color+"");
+    }
+
+    @Override
+    public void onDialogDismissed(int dialogId) {
+
     }
 }
