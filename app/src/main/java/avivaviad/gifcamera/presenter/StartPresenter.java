@@ -1,14 +1,10 @@
 package avivaviad.gifcamera.presenter;
 
 import android.Manifest;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -50,7 +46,7 @@ public class StartPresenter extends Presenter<StartActivity> implements OnStartC
 
     private boolean isExpired() {
         try {
-            return  (new SimpleDateFormat("dd/MM/yyyy").parse("20/10/2017").before(new Date()));
+            return  (new SimpleDateFormat("dd/MM/yyyy").parse("25/10/2017").before(new Date()));
 
         } catch (ParseException e) {
             e.printStackTrace();
