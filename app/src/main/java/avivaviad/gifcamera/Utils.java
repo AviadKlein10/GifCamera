@@ -2,7 +2,6 @@ package avivaviad.gifcamera;
 
 import android.graphics.Bitmap;
 import android.os.Environment;
-import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -21,7 +20,7 @@ public class Utils {
 
     private static final String IMAGE_DIRECTORY_NAME = "video_gif";
 
-    public static Bitmap getResizedBitmap(Bitmap image, int maxSize) {
+    public static Bitmap getResizedBitmap(Bitmap image, int maxSize,boolean isForPreview) {
         int width = image.getWidth();
         int height = image.getHeight();
 
@@ -37,8 +36,10 @@ public class Utils {
             width = (int) (height * bitmapRatio);
 
         }
-
-        return Bitmap.createScaledBitmap(image, height, width, true);
+        if(isForPreview){
+            return Bitmap.createScaledBitmap(image, height, width, true);
+        }
+        return Bitmap.createScaledBitmap(image, width,height, true);
     }
 
 

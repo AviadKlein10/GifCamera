@@ -4,10 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.util.Log;
-
-import com.bumptech.glide.util.Util;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -24,7 +21,6 @@ import avivaviad.gifcamera.custom.thread.GenerateGifFile;
 import avivaviad.gifcamera.custom.thread.GifCreationCallback;
 import avivaviad.gifcamera.model.GifObject;
 import avivaviad.gifcamera.view.activity.GifCameraActivity;
-import avivaviad.gifcamera.view.fragments.CameraFrag;
 import io.realm.Realm;
 import io.realm.RealmList;
 
@@ -64,13 +60,11 @@ public class GifCameraPresenter extends Presenter<GifCameraActivity> implements 
                 addFrameToBitmaps(context, i);
                 if (cbAddImage) {
                     addSmallImageToBitmaps(context, i);
-
                 }
-
             }
             if (cbAddText) {
                 addTextToBitmaps(context, i);
-               }
+            }
 
         }
         // Realm realm = Realm.getDefaultInstance();
@@ -111,7 +105,7 @@ public class GifCameraPresenter extends Presenter<GifCameraActivity> implements 
     public GifCameraPresenter(Context context) {
         previewBitmaps = new ArrayList<>();
         if((SharedPreferencesManager.loadValue(context, SharedPreferencesManager.KEY_CHECK_ADD_FRAME)).contains("true")
-            && !SharedPreferencesManager.loadValue(context, SharedPreferencesManager.KEY_FRAME_SRC).trim().isEmpty()) {
+                && !SharedPreferencesManager.loadValue(context, SharedPreferencesManager.KEY_FRAME_SRC).trim().isEmpty()) {
             cbAddFrame = true ;
         }else{
             cbAddFrame = false;
@@ -158,7 +152,7 @@ public class GifCameraPresenter extends Presenter<GifCameraActivity> implements 
         if(cbAddFrame){
             previewBitmaps.add(/*Utils.getResizedBitmap(bitmap, previewQuality)*/bitmap);
         }else{
-            previewBitmaps.add(Utils.getResizedBitmap(bitmap, previewQuality));
+            previewBitmaps.add(Utils.getResizedBitmap(bitmap, previewQuality,true));
             //   gifBitmaps.add(Utils.getResizedBitmap(bitmap, gifQuality));
         }
     }
@@ -350,15 +344,16 @@ public class GifCameraPresenter extends Presenter<GifCameraActivity> implements 
 
     public void generateGifFromBitmaps() {
         //   gifBitmaps.addAll(previewBitmaps) ; //resizeImagesToGifSize(previewBitmaps);
-        new GenerateGifFile(resizeImagesToGifSize(previewBitmaps), GifCameraActivity.DURATION_FOR_EACH_FRAME, this).start();
+        resizeImagesToGifSize(previewBitmaps);
+        //  new GenerateGifFile(resizedBitmaps, GifCameraActivity.DURATION_FOR_EACH_FRAME, this).start();
     }
 
-    private ArrayList<Bitmap> resizeImagesToGifSize(ArrayList<Bitmap> images) {
+    private void resizeImagesToGifSize(ArrayList<Bitmap> images) {
         ArrayList<Bitmap> gifsBitmaps = new ArrayList<>();
         for (int i = 0; i < images.size(); i++) {
-            gifsBitmaps.add(Utils.getResizedBitmap(images.get(i), gifQuality));
+            gifsBitmaps.add(Utils.getResizedBitmap(images.get(i), gifQuality,false));
         }
-        return images;
+        new GenerateGifFile(gifsBitmaps, GifCameraActivity.DURATION_FOR_EACH_FRAME, this).start();
     }
 
 
