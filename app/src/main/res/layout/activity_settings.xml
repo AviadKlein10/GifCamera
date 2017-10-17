@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Capture frame rate:
-מומלץ בין450 ל1000"
+מומלץ בין 450- ל1000"
             android:textColor="#ffffff"
             android:textSize="30sp" />
 
@@ -81,7 +81,7 @@
             android:layout_alignStart="@+id/edit_capture_frame_rate"
             android:layout_below="@+id/edit_capture_frame_rate"
             android:text="Duration of each frame:
-מומלץ בין 80 ל220"
+מומלץ בין 80- ל220"
             android:textColor="#ffffff"
             android:textSize="30sp" />
 
@@ -108,7 +108,7 @@
             android:layout_alignStart="@+id/edit_duration_for_each_frame"
             android:layout_below="@+id/edit_duration_for_each_frame"
             android:text="Frame count:
-מומלץ בין 4 ל22"
+מומלץ בין 4- ל22"
             android:textColor="#ffffff"
             android:textSize="30sp" />
 
@@ -206,6 +206,7 @@
             android:id="@+id/spinner_font_size"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/font_size"
             android:layout_alignStart="@+id/font_size"
             android:layout_below="@+id/font_size"
             android:background="#ffffff" />
@@ -224,7 +225,10 @@
             android:id="@+id/btn_font_color"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/btn_default_settings"
+
+
+            android:layout_alignLeft="@+id/font_color"
+            android:layout_alignRight="@+id/font_color"
             android:layout_below="@+id/font_color"
             android:layout_marginStart="14dp"
 
@@ -267,7 +271,7 @@
             android:layout_alignBaseline="@+id/add_frame"
             android:layout_toRightOf="@+id/add_frame"
             android:buttonTint="@android:color/holo_blue_dark"
-            android:enabled="false" />
+            android:enabled="true" />
 
         <TextView
             android:id="@+id/add_image"
@@ -301,7 +305,7 @@
             android:layout_alignBaseline="@+id/add_image"
             android:layout_toRightOf="@+id/add_image"
             android:buttonTint="@android:color/holo_blue_dark"
-            android:enabled="false" />
+            android:enabled="true" />
 
 
         <TextView

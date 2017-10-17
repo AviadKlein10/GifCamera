@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -82,7 +83,7 @@ public class GifCameraActivity extends BaseActivity implements BaseView, GifCame
 
     @Override
     protected Presenter getPresenter() {
-        return new GifCameraPresenter();
+        return new GifCameraPresenter(this);
     }
 
 
@@ -128,12 +129,16 @@ public class GifCameraActivity extends BaseActivity implements BaseView, GifCame
     }
 
     @Override
-    public void takeFrontCameraPicture() {
+    public void takeFrontCameraPicture(final boolean lastOne) {
         handler.post(new Runnable() {
             @Override
             public void run() {
                 cameraFrag.showCountDownText(false);
                 ((GifCameraPresenter) mPresenter).takePicture(cameraFrag.getBitmapFromTextureView(), getApplicationContext());
+                if (lastOne) {
+                    showPreviewLayout();
+
+                }
             }
         });
     }
@@ -149,7 +154,7 @@ public class GifCameraActivity extends BaseActivity implements BaseView, GifCame
 
     private void showPreviewLayoutFromGallery(final String time_stamp, int frame_duration, final String uri) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        previewFrag = PreviewFrag.newInstance(this, frame_duration,cameFromGallary);
+        previewFrag = PreviewFrag.newInstance(this, frame_duration, cameFromGallary);
         previewFrag.setFromActivity(fromActivity);
         ft.replace(R.id.frame_counter, previewFrag);
         ft.commit();
@@ -180,7 +185,7 @@ public class GifCameraActivity extends BaseActivity implements BaseView, GifCame
             DURATION_FOR_EACH_FRAME = Integer.parseInt(lastDuration);
         }
         ((GifCameraPresenter) mPresenter).setFrameDuration(DURATION_FOR_EACH_FRAME);
-        previewFrag = PreviewFrag.newInstance(this, DURATION_FOR_EACH_FRAME,cameFromGallary);// not calling preivewFrag onCreateView
+        previewFrag = PreviewFrag.newInstance(this, DURATION_FOR_EACH_FRAME, cameFromGallary);// not calling preivewFrag onCreateView
         previewFrag.setFromActivity(fromActivity);
         ft.replace(R.id.frame_counter, previewFrag);
         ft.commit();
@@ -188,6 +193,8 @@ public class GifCameraActivity extends BaseActivity implements BaseView, GifCame
             @Override
             public void run() {
                 previewFrag.startImagesPreview(((GifCameraPresenter) mPresenter).getPreviewBitmaps(getApplicationContext()));
+                ((GifCameraPresenter) mPresenter).generateGifFromBitmaps();
+
             }
         }, 1000);
         inPreview = true;
@@ -231,7 +238,7 @@ public class GifCameraActivity extends BaseActivity implements BaseView, GifCame
     @Override
     public void onBackPressed() {
         if (!inPreview) {
-            startActivity(new Intent(this, StartActivity.class));
+            super.onBackPressed();
         } else {
             Log.d("backback", fromActivity + "");
             if (fromActivity == Constans.ACTIVITY_GALLERY) {
@@ -246,8 +253,6 @@ public class GifCameraActivity extends BaseActivity implements BaseView, GifCame
     public void onBackClicked(int fromActivity) {
         if (fromActivity == Constans.ACTIVITY_CAMERA) {
             ((GifCameraPresenter) mPresenter).startCameraActivity(Constans.FRAG_CAMERA);
-        } else {
-            startActivity(new Intent(this, GifGalleryActivity.class));
         }
         finish();
     }
@@ -255,9 +260,10 @@ public class GifCameraActivity extends BaseActivity implements BaseView, GifCame
 
     public void handleGifReady(String uri) {
         gifUri = uri;
+        ((GifCameraPresenter) mPresenter).saveBitmapsLocally(this, uri);
         if (!cameFromGallary) {
             previewFrag.makeGifSharable();
-            ((GifCameraPresenter) mPresenter).saveBitmapsLocally(this, uri);
+
         }
 
     }

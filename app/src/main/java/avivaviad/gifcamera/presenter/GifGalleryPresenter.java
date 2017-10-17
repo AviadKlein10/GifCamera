@@ -42,7 +42,7 @@ public class GifGalleryPresenter extends Presenter<GifGalleryActivity> {
         intent.putExtra("frame_duration",frameDuration);
         intent.putExtra("gif_uri",uri);
         mView.startActivity(intent);
-        mView.finish();
+
     }
 
     public void searchGifsByTag(String tag, Realm realm) {

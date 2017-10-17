@@ -1,8 +1,10 @@
 package avivaviad.gifcamera.view.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -12,6 +14,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.File;
+
 import avivaviad.gifcamera.R;
 import avivaviad.gifcamera.SharedPreferencesManager;
 import avivaviad.gifcamera.presenter.BaseView;
@@ -20,6 +24,8 @@ import avivaviad.gifcamera.presenter.OnStartCallBack;
 import avivaviad.gifcamera.presenter.Presenter;
 import avivaviad.gifcamera.presenter.StartPresenter;
 import avivaviad.gifcamera.view.BaseActivity;
+
+import static android.os.Environment.DIRECTORY_PICTURES;
 
 /**
  * Created by DELL on 20/07/2017.
@@ -46,17 +52,23 @@ public class StartActivity extends BaseActivity implements BaseView, OnStartCall
                 ((StartPresenter) mPresenter).onStartPressed();
             }
         });
+
+
         btnSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ((StartPresenter) mPresenter).onSettingsPressed();
             }
         });
+
+
     }
 
+
+
     private void initDefault() {
-        if(SharedPreferencesManager.isFirstInit(this)){
-            Log.d("firstinit","first");
+        if (SharedPreferencesManager.isFirstInit(this)) {
+            Log.d("firstinit", "first");
             SharedPreferencesManager.setDefaultSettings(this);
         }
     }
@@ -64,7 +76,7 @@ public class StartActivity extends BaseActivity implements BaseView, OnStartCall
 
     @Override
     public void onRequestPermissionsResult(int permsRequestCode, String[] permissions, int[] grantResults) {
-        if(ContextCompat.checkSelfPermission(getBaseContext(), "android.permission.MANAGE_DOCUMENTS") == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(getBaseContext(), "android.permission.MANAGE_DOCUMENTS") == PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(StartActivity.this, new String[]{"android.permission.MANAGE_DOCUMENTS"}, REQUEST_CODE_ASK_PERMISSIONS);
         }
         if (permsRequestCode == 200) {

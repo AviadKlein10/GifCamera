@@ -32,16 +32,19 @@ import java.util.HashMap;
 
 import avivaviad.gifcamera.R;
 import avivaviad.gifcamera.SharedPreferencesManager;
+import avivaviad.gifcamera.Utils;
 import avivaviad.gifcamera.presenter.BaseView;
 import avivaviad.gifcamera.presenter.Presenter;
 import avivaviad.gifcamera.presenter.SettingsPresenter;
 import avivaviad.gifcamera.view.BaseActivity;
 
+import static avivaviad.gifcamera.SharedPreferencesManager.KEY_FONT_COLOR;
+
 /**
  * Created by Aviad on 14/08/2017.
  */
 
-public class SettingsActivity extends BaseActivity implements BaseView, SettingsPresenter.SettingsPresenterCallBack, AdapterView.OnItemSelectedListener, View.OnClickListener, CompoundButton.OnCheckedChangeListener,ColorPickerDialogFragment.ColorPickerDialogListener {
+public class SettingsActivity extends BaseActivity implements BaseView, SettingsPresenter.SettingsPresenterCallBack, AdapterView.OnItemSelectedListener, View.OnClickListener, CompoundButton.OnCheckedChangeListener, ColorPickerDialogFragment.ColorPickerDialogListener {
     private static final int READ_RC_SMALL_IMG = 41, READ_RC_FRAME = 42;
     private EditText edit_duration_for_each_frame, edit_capture_frame_rate,
             edit_frame_count, edit_title, edit_tag_db;
@@ -61,9 +64,15 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
         setContentView(R.layout.activity_settings);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         context = getApplicationContext();
+        saveDefaultColor();
         initViews();
         loadViewLastSettings();
 
+
+    }
+
+    private void saveDefaultColor() {
+        saveValue(KEY_FONT_COLOR, String.valueOf(Color.WHITE));
 
     }
 
@@ -132,11 +141,10 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
         spinner_font.setAdapter(spinnerAdapter);
         spinner_font.setSelection(0);
         spinner_font.setOnItemSelectedListener(this);
-         colorPickerDialogFragment = ColorPickerDialogFragment
+        colorPickerDialogFragment = ColorPickerDialogFragment
                 .newInstance(0, null, null, Color.BLACK, true);
 
         colorPickerDialogFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.LightPickerDialogTheme);
-
 
 
         spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, fontSize);
@@ -158,6 +166,8 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
         for (int i = 0; i < hmLastValues.size(); i++) {
             strIndex = String.valueOf(i);
             loadedValue = hmLastValues.get(strIndex);
+            String loadedValueReformated = Utils.reforrmatColorToNum(loadedValue);
+
             switch (strIndex) {
                 case "0":
                     edit_capture_frame_rate.setText(loadedValue);
@@ -181,9 +191,9 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
                     spinner_font.setSelection(Integer.parseInt(loadedValue));
                     break;
                 case "7":
-                   // int color = (Color.parseColor(loadedValue));
+                    // int color = (Color.parseColor(loadedValue));
                     colorPickerDialogFragment = ColorPickerDialogFragment
-                            .newInstance(0, "ok", null, Integer.parseInt(loadedValue), true);
+                            .newInstance(0, "ok", null, Color.WHITE, true);
 
                     colorPickerDialogFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.DarkPickerDialogTheme);
                     break;
@@ -381,7 +391,7 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
 
     @Override
     public void onColorSelected(int dialogId, int color) {
-        SharedPreferencesManager.saveValue(context,SharedPreferencesManager.KEY_FONT_COLOR,color+"");
+        SharedPreferencesManager.saveValue(context, KEY_FONT_COLOR, color + "");
     }
 
     @Override

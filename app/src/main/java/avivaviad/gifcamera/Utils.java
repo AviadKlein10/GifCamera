@@ -37,8 +37,7 @@ public class Utils {
             width = (int) (height * bitmapRatio);
 
         }
-        Log.d("sizepre",width+"");
-        Log.d("sizepre",height+"");
+
         return Bitmap.createScaledBitmap(image, height, width, true);
     }
 
@@ -57,43 +56,46 @@ public class Utils {
     }
 
 
-        public static byte[] generateGIF(ArrayList<Bitmap> bitmaps,int framesDelay) {
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            AnimatedGifEncoder encoder = new AnimatedGifEncoder();
+    public static byte[] generateGIF(ArrayList<Bitmap> bitmaps, int framesDelay) {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        AnimatedGifEncoder encoder = new AnimatedGifEncoder();
 
-            //encoder.setQuality(1);
+        //encoder.setQuality(1);
         /*Sets the delay time between each frame, or changes it for subsequent
           frames (applies to last frame added).*/
-            encoder.setDelay(framesDelay);
+        encoder.setDelay(framesDelay);
 
         /*Sets the number of times the set of GIF frames should be played. Default
          *is 1; 0 means play indefinitely. Must be invoked before the first image
          *is added.*/
 
-            encoder.setRepeat(0);
+        encoder.setRepeat(0);
 
         /*Initiates GIF file creation on the given stream. The stream is not closed
          *automatically.*/
-            encoder.start(bos);
-            for (int i = 1; i < bitmaps.size(); i++) {
-                //collecting frames at a given time
+        encoder.start(bos);
+        for (int i = 1; i < bitmaps.size(); i++) {
+            //collecting frames at a given time
 
-                //Bitmap bmp = mediaMetadataRetriever.getFrameAtTime(i*1000000);
+            //Bitmap bmp = mediaMetadataRetriever.getFrameAtTime(i*1000000);
 
-                /**
-                 * Adds next GIF frame. the size of the first image is used
-                 * for all subsequent frames.
-                 */
-                encoder.addFrame(bitmaps.get(i));
-            }
-
-            encoder.finish();
-            return bos.toByteArray();
-
+            /**
+             * Adds next GIF frame. the size of the first image is used
+             * for all subsequent frames.
+             */
+            encoder.addFrame(bitmaps.get(i));
         }
 
+        encoder.finish();
+        return bos.toByteArray();
 
     }
+
+
+    public static String reforrmatColorToNum(String loadedValue) {
+        return loadedValue.replace("#", "");
+    }
+}
 
 
 

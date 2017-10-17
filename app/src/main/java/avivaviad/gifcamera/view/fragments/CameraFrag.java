@@ -222,6 +222,7 @@ public class CameraFrag extends Fragment implements TextureView.SurfaceTextureLi
 
     public void showCountDownText(boolean enable) {
         if (enable) {
+
             countDownNumber.setVisibility(View.VISIBLE);
         } else {
             countDownNumber.setVisibility(View.GONE);

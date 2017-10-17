@@ -130,12 +130,6 @@ public class GifGalleryActivity extends BaseActivity implements GifGalleryPresen
     }
 
     @Override
-    public void onBackPressed() {
-        startActivity(new Intent(this, StartActivity.class));
-        super.onBackPressed();
-    }
-
-    @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
     }
 
