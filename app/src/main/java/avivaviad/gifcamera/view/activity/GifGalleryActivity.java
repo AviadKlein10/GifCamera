@@ -1,6 +1,5 @@
 package avivaviad.gifcamera.view.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.GridLayoutManager;
@@ -106,10 +105,12 @@ public class GifGalleryActivity extends BaseActivity implements GifGalleryPresen
     }
 
     @Override
-    public void onFinishYesNoDialog(boolean state, int position) {
+    public void onFinishYesNoDialog(boolean toDelete, int position) {
         // -- Finish dialog box show msg
-        RealmHelper.removeGif(mArrGifs.get(position).getmGifSrc(), Realm.getDefaultInstance());
-        adapter.notifyDataSetChanged();
+        if(toDelete){
+            RealmHelper.removeGif(mArrGifs.get(position).getmGifSrc(), Realm.getDefaultInstance());
+            adapter.notifyDataSetChanged();
+        }
     }
 
 

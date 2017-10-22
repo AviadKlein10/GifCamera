@@ -61,7 +61,7 @@ public class DialogFragmentDelete extends DialogFragment {
             //---gets the calling activity---
             YesNoDialogListener activity = (YesNoDialogListener) getActivity();
             boolean state =
-                    ((Button) v).getText().toString().equals("כן") ? true : false;
+                    ((Button) v).getText().toString().equals("כן");
             activity.onFinishYesNoDialog(state,position);
             //---dismiss the alert---
             dismiss();
