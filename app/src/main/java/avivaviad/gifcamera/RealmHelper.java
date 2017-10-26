@@ -42,11 +42,11 @@ public class RealmHelper {
         return mRealm.where(GifObject.class).contains("timeStamp", timeStamp).findFirst();
     }
 
-    public static void removeGif(final String gifSrc, Realm mRealm) {
+    public static void removeGif(final String gifTimeStamp, Realm mRealm) {
         mRealm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                GifObject result = realm.where(GifObject.class).equalTo("mGifSrc", gifSrc).findFirst();
+                GifObject result = realm.where(GifObject.class).equalTo("timeStamp", gifTimeStamp).findFirst();
                 result.deleteFromRealm();
             }
         });

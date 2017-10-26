@@ -1,15 +1,19 @@
 package avivaviad.gifcamera.model;
 
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import avivaviad.gifcamera.R;
@@ -24,6 +28,7 @@ public class AdapterGifGrid extends RecyclerView.Adapter<AdapterGifGrid.ViewHold
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
     private ItemLongClickListener mLongClickListener;
+    private List<Integer> selectedIds = new ArrayList<>();
 
     public AdapterGifGrid(Context context, List<GifObject> data) {
         this.mInflater = LayoutInflater.from(context);
@@ -41,6 +46,16 @@ public class AdapterGifGrid extends RecyclerView.Adapter<AdapterGifGrid.ViewHold
         String tag = mData.get(position).getmGifTag();
         Glide.with(mInflater.getContext()).load(mData.get(position).getmGifSrc()).into(holder.imgGif);
         holder.txtTag.setText(tag);
+        int id = Integer.parseInt(mData.get(position).getTimeStamp());
+
+        if (selectedIds.contains(id)){
+            //if item is selected then,set foreground color of FrameLayout.
+            holder.rootView.setForeground(new ColorDrawable(ContextCompat.getColor(mInflater.getContext(),R.color.colorControlActivated)));
+        }
+        else {
+            //else remove selected item color.
+            holder.rootView.setForeground(new ColorDrawable(ContextCompat.getColor(mInflater.getContext(),android.R.color.transparent)));
+        }
     }
 
     @Override
@@ -61,6 +76,7 @@ public class AdapterGifGrid extends RecyclerView.Adapter<AdapterGifGrid.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         TextView txtTag;
         ImageView imgGif;
+        FrameLayout rootView;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -68,6 +84,7 @@ public class AdapterGifGrid extends RecyclerView.Adapter<AdapterGifGrid.ViewHold
             imgGif = (ImageView) itemView.findViewById(R.id.gif_img);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
+            rootView = (FrameLayout) itemView.findViewById(R.id.root_view);
         }
 
 
@@ -108,4 +125,10 @@ public class AdapterGifGrid extends RecyclerView.Adapter<AdapterGifGrid.ViewHold
     public interface ItemLongClickListener {
         void onLongItemClick(View view, int position);
     }
+
+    public void setSelectedIds(List<Integer> selectedIds) {
+        this.selectedIds = selectedIds;
+        notifyDataSetChanged();
+    }
+
 }

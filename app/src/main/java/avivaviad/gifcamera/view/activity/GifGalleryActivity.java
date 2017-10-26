@@ -3,10 +3,15 @@ package avivaviad.gifcamera.view.activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.view.ActionMode;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,6 +24,7 @@ import java.util.List;
 
 import avivaviad.gifcamera.R;
 import avivaviad.gifcamera.RealmHelper;
+import avivaviad.gifcamera.custom.RecyclerItemClickListener;
 import avivaviad.gifcamera.custom.dialog.DialogFragmentDelete;
 import avivaviad.gifcamera.model.AdapterGifGrid;
 import avivaviad.gifcamera.model.GifObject;
@@ -33,12 +39,15 @@ import io.realm.RealmResults;
  * Created by Aviad on 25/09/2017.
  */
 
-public class GifGalleryActivity extends BaseActivity implements GifGalleryPresenter.GifGallaryListener, AdapterGifGrid.ItemClickListener, AdapterGifGrid.ItemLongClickListener, BaseView, TextWatcher,DialogFragmentDelete.YesNoDialogListener {
+public class GifGalleryActivity extends BaseActivity implements GifGalleryPresenter.GifGallaryListener, AdapterGifGrid.ItemClickListener, AdapterGifGrid.ItemLongClickListener, BaseView, TextWatcher,DialogFragmentDelete.YesNoDialogListener,ActionMode.Callback {
 
     private AdapterGifGrid adapter;
     private List<GifObject> mArrGifs;
     private EditText search;
     private Spinner spinnerLastTag;
+    private ActionMode actionMode;
+    private boolean isMultiSelect = false;
+    private ArrayList<Integer> selectedIds = new ArrayList<>();
 
 
     @Override
@@ -70,6 +79,30 @@ public class GifGalleryActivity extends BaseActivity implements GifGalleryPresen
         adapter.setLongClickListener(this);
         recyclerView.setAdapter(adapter);
 
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                if (isMultiSelect){
+                    //if multiple selection is enabled then select item on single click else perform normal click on item.
+                    multiSelect(position);
+                }
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+                if (!isMultiSelect){
+                    selectedIds = new ArrayList<>();
+                    isMultiSelect = true;
+
+                    if (actionMode == null){
+                        actionMode = startSupportActionMode(GifGalleryActivity.this); //show ActionMode.
+                    }
+                }
+
+                multiSelect(position);
+            }
+        }));
+
         search.addTextChangedListener(this);
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -80,6 +113,66 @@ public class GifGalleryActivity extends BaseActivity implements GifGalleryPresen
 
 
     }
+
+    private void multiSelect(int position) {
+        GifObject data = adapter.getItem(position);
+        if (data != null){
+            if (actionMode != null) {
+                if (selectedIds.contains(Integer.valueOf(data.getTimeStamp())))
+                    selectedIds.remove(Integer.valueOf(data.getTimeStamp()));
+                else
+                    selectedIds.add(Integer.valueOf(data.getTimeStamp()));
+
+                if (selectedIds.size() > 0)
+                    actionMode.setTitle(String.valueOf(selectedIds.size())); //show selected item count on action mode.
+                else{
+                    actionMode.setTitle(""); //remove item count from action mode.
+                    actionMode.finish(); //hide action mode.
+                }
+                adapter.setSelectedIds(selectedIds);
+
+            }
+        }
+    }
+
+
+
+    @Override
+    public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+        MenuInflater inflater = mode.getMenuInflater();
+        inflater.inflate(R.menu.menu_multi_selection, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+        return false;
+    }
+
+    @Override
+    public boolean onActionItemClicked(ActionMode mode, MenuItem menuItem) {
+        switch (menuItem.getItemId()){
+            case R.id.action_delete:
+                //just to show selected items.
+                buildAlertDialog(selectedIds);
+                for (int i = 0; i < mArrGifs.size(); i++) {
+
+                }
+              //  Toast.makeText(this, "Selected items are :" + stringBuilder.toString(), Toast.LENGTH_SHORT).show();
+                return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onDestroyActionMode(ActionMode mode) {
+        actionMode = null;
+        isMultiSelect = false;
+        selectedIds = new ArrayList<>();
+        adapter.setSelectedIds(new ArrayList<Integer>());
+    }
+
+
 
     @Override
     protected Presenter getPresenter() {
@@ -97,40 +190,25 @@ public class GifGalleryActivity extends BaseActivity implements GifGalleryPresen
     }
 
 
-    private void buildAlertDialog(final int position) {
+    private void buildAlertDialog(ArrayList<Integer> positions) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         DialogFragmentDelete yesnoDialog = new DialogFragmentDelete();
-        yesnoDialog.setPosition(position);
+        yesnoDialog.setPositions(positions);
         yesnoDialog.setCancelable(false);
         yesnoDialog.setDialogTitle("Select One");
         yesnoDialog.show(fragmentManager, "Yes/No Dialog");
 
-
-         /*
-     AlertDialog  alertDialog =  new AlertDialog.Builder(GifGalleryActivity.this)
-                .setTitle("מחיקת פריט")
-                .setMessage("האם אתה בטוח שברצונך למחוק את קובץ הGIF?")
-                .setNegativeButton(android.R.string.cancel, null)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        RealmHelper.removeGif(mArrGifs.get(position).getmGifSrc(), Realm.getDefaultInstance());
-                        adapter.notifyDataSetChanged();
-                        // do the acknowledged action, beware, this is run on UI thread
-                    }
-                })
-                .create();
-        alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
-        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
-        alertDialog.show();*/
-
     }
 
     @Override
-    public void onFinishYesNoDialog(boolean toDelete, int position) {
+    public void onFinishYesNoDialog(boolean toDelete, ArrayList<Integer> positions) {
         // -- Finish dialog box show msg
         if(toDelete){
-            RealmHelper.removeGif(mArrGifs.get(position).getmGifSrc(), Realm.getDefaultInstance());
+            for (int i = 0; i < positions.size(); i++) {
+                Log.d("thisdelete",positions.get(i)+"");
+                RealmHelper.removeGif(String.valueOf(positions.get(i)), Realm.getDefaultInstance());
+            }
+           // RealmHelper.removeGif(mArrGifs.get(position).getmGifSrc(), Realm.getDefaultInstance());
             adapter.notifyDataSetChanged();
         }
     }
@@ -149,7 +227,7 @@ public class GifGalleryActivity extends BaseActivity implements GifGalleryPresen
 
     @Override
     public void onLongItemClick(View view, int position) {
-        buildAlertDialog(position);
+        //buildAlertDialog(position);
     }
 
     @Override

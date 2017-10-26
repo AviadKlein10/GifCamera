@@ -4,4 +4,5 @@
     <string name="enter_event_name">Enter event name</string>
     <string name="no_results">No Results</string>
     <string name="delete_gif_message">האם למחוק גיף זה?</string>
+    <string name="menu_item_delete">מחיקה</string>
 </resources>

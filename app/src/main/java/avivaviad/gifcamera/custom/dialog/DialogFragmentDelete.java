@@ -12,19 +12,26 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import java.util.ArrayList;
+
 import avivaviad.gifcamera.R;
 
 public class DialogFragmentDelete extends DialogFragment {
     Button btnYes,btnNo;
     static String DialogBoxTitle;
     private int position;
+    private ArrayList<Integer> positions;
 
     public void setPosition(int position) {
         this.position = position;
     }
 
+    public void setPositions(ArrayList<Integer> positions) {
+        this.positions = positions;
+    }
+
     public interface YesNoDialogListener {
-        void onFinishYesNoDialog(boolean state, int position);
+        void onFinishYesNoDialog(boolean state, ArrayList<Integer> positions);
     }
 
     //---empty constructor required
@@ -62,7 +69,7 @@ public class DialogFragmentDelete extends DialogFragment {
             YesNoDialogListener activity = (YesNoDialogListener) getActivity();
             boolean state =
                     ((Button) v).getText().toString().equals("כן");
-            activity.onFinishYesNoDialog(state,position);
+            activity.onFinishYesNoDialog(state,positions);
             //---dismiss the alert---
             dismiss();
         }

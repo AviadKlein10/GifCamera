@@ -3,16 +3,19 @@
     android:orientation="vertical" android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:gravity="center">
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/root_view">
 
     <ImageView
         android:layout_height="100dp"
         android:layout_width="100dp"
-        android:id="@+id/gif_img"
-/>
+        android:id="@+id/gif_img"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
         android:id="@+id/gif_tag"/>
-
+    </FrameLayout>
 </LinearLayout>

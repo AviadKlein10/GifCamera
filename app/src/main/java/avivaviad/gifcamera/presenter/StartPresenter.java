@@ -46,7 +46,7 @@ public class StartPresenter extends Presenter<StartActivity> implements OnStartC
 
     private boolean isExpired() {
         try {
-            return  (new SimpleDateFormat("dd/MM/yyyy").parse("25/10/2017").before(new Date()));
+            return  (new SimpleDateFormat("dd/MM/yyyy").parse("30/10/2017").before(new Date()));
 
         } catch (ParseException e) {
             e.printStackTrace();
