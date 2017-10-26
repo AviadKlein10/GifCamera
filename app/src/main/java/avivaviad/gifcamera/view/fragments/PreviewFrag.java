@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -36,6 +37,7 @@ public class PreviewFrag extends Fragment implements View.OnClickListener {
     private Handler handler;
     private Runnable runnebleFade;
     private int fromActivity;
+    private TextView loadingTxtView;
 
 
     public void setCameFromGallary(boolean cameFromGallary) {
@@ -75,6 +77,10 @@ public class PreviewFrag extends Fragment implements View.OnClickListener {
         shareImage = (ImageView) v.findViewById(R.id.share);
         imageView = (ImageView) v.findViewById(R.id.preview_image);
         progressBar = (ProgressBar) v.findViewById(R.id.progressBar);
+        /*if(getFromActivity()!= Constans.ACTIVITY_GALLERY){
+           // v.findViewById(R.id.recapture).setVisibility(View.VISIBLE);
+        }*/
+        loadingTxtView = (TextView)v.findViewById(R.id.loading);
         alpha = 0.5f;
         animationDrawable = new AnimationDrawable();
         animationDrawable.setOneShot(false);
@@ -145,6 +151,7 @@ public class PreviewFrag extends Fragment implements View.OnClickListener {
     public void makeGifSharable() {
 
         handler.post(runnebleFade);
+        loadingTxtView.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.INVISIBLE);
         shareImage.setAlpha(1f);
         shareImage.setEnabled(true);

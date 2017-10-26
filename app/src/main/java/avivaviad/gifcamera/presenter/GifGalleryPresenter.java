@@ -45,7 +45,7 @@ public class GifGalleryPresenter extends Presenter<GifGalleryActivity> {
 
     }
 
-    public void searchGifsByTag(String tag, Realm realm) {
+    public void searchGifsByTag(String tag, final Realm realm) {
         RealmResults<GifObject> gifsOjects = RealmHelper.loadGifsByTag(tag, realm);
         mView.onSearchArrived(gifsOjects);
 

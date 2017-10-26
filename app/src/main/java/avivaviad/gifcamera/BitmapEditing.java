@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
@@ -90,7 +89,7 @@ public class BitmapEditing {
         return lines;
     }
 
-    public static Bitmap addFrame(Context context, Bitmap bitmap, String srcFrame) {
+    public static Bitmap addFrame(Context context, Bitmap bitmap, String srcFrame, boolean shouldUseSmallFrame) {
 
         Resources resources = context.getResources();
         float scale = resources.getDisplayMetrics().density;
@@ -135,11 +134,16 @@ public class BitmapEditing {
 
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
-
+        Bitmap image,bmOverlay;
+        if(shouldUseSmallFrame){
+            bmOverlay = Bitmap.createScaledBitmap(bitmap, width, height, false);
+            image= Bitmap.createScaledBitmap(border,border.getWidth(),border.getHeight(), false);
+        }else{
+            image = Bitmap.createScaledBitmap(bitmap, border.getWidth(), 8 * (border.getHeight()/10), false);
+            bmOverlay = Bitmap.createBitmap(border.getWidth(), border.getHeight(), border.getConfig());
+        }
         //Bitmap change = Bitmap.createScaledBitmap(bitmap, width+100, height+100, false);
-        Bitmap image = Bitmap.createScaledBitmap(bitmap, border.getWidth(), 8 * (border.getHeight()/10), false);
         //Bitmap frame = Bitmap.createScaledBitmap(border,width,height, false);
-        Bitmap bmOverlay = Bitmap.createBitmap(border.getWidth(), border.getHeight(), border.getConfig());
 
         Canvas canvas = new Canvas(bmOverlay);
         canvas.drawBitmap(image, 0, 0, null);

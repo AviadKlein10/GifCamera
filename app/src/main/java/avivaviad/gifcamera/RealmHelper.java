@@ -3,8 +3,11 @@ package avivaviad.gifcamera;
 import android.graphics.Bitmap;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
+import avivaviad.gifcamera.model.CustomRealmString;
 import avivaviad.gifcamera.model.GifObject;
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -61,5 +64,36 @@ public class RealmHelper {
 
     public static RealmResults<GifObject> loadGifsByTag(String tag, Realm realm) {
         return realm.where(GifObject.class).equalTo(GIF_EVENT_TAG, tag).findAll();
+    }
+
+    public static void saveLastTag(String lastTag,Realm realm) {
+        final CustomRealmString realmString = new CustomRealmString();
+        realmString.setLastTag(lastTag);
+      // Long tsLong = System.currentTimeMillis() / 1000;
+      // String tsStr = tsLong.toString();
+      // realmString.setTimeStamp(tsStr);
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.copyToRealmOrUpdate(realmString);
+            }
+        });
+    }
+
+    public static String[] loadLastTags(Realm realm){
+        RealmResults<CustomRealmString>results =
+                realm.where(CustomRealmString.class).findAll();
+                   //     .findAllSorted("timestamp", Sort.DESCENDING);
+        String[] arrLastTags = new String[results.size()];
+        int resultsCount = results.size();
+        if (resultsCount>20){
+            resultsCount=20;
+        }
+        for (int i = 0; i < resultsCount; i++) {
+            arrLastTags[i] = results.get(i).getLastTag();
+        }
+        Collections.reverse(Arrays.asList(arrLastTags));
+
+        return arrLastTags;
     }
 }

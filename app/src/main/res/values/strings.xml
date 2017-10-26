@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Gif Camera</string>
     <string name="title_activity_main2">Main2Activity</string>
-    <string name="enter_event_name">Enter evnet name</string>
+    <string name="enter_event_name">Enter event name</string>
     <string name="no_results">No Results</string>
     <string name="delete_gif_message">האם למחוק גיף זה?</string>
 </resources>

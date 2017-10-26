@@ -15,7 +15,7 @@
             android:id="@+id/capture_frame_rate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Capture frame rate:
+            android:text="Capture frame rate:\n
 מומלץ בין 450- ל1000"
             android:textColor="#ffffff"
             android:textSize="30sp" />
@@ -80,7 +80,7 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/edit_capture_frame_rate"
             android:layout_below="@+id/edit_capture_frame_rate"
-            android:text="Duration of each frame:
+            android:text="Duration of each frame:\n
 מומלץ בין 80- ל220"
             android:textColor="#ffffff"
             android:textSize="30sp" />
@@ -107,7 +107,7 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/edit_duration_for_each_frame"
             android:layout_below="@+id/edit_duration_for_each_frame"
-            android:text="Frame count:
+            android:text="Frame count:\n
 מומלץ בין 4- ל22"
             android:textColor="#ffffff"
             android:textSize="30sp" />
@@ -325,6 +325,32 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/tag_db"
             android:layout_below="@+id/tag_db"
+            android:hint="text"
+            android:imeOptions="actionDone"
+            android:lines="1"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColor="#ffffff"
+            android:textColorHint="@android:color/darker_gray"
+            android:textSize="26sp" />
+
+        <TextView
+            android:id="@+id/share_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/edit_tag_db"
+            android:layout_below="@+id/edit_tag_db"
+            android:paddingTop="20dp"
+            android:text="Message while sharing:"
+            android:textColor="#ffffff"
+            android:textSize="30sp" />
+
+        <EditText
+            android:id="@+id/edit_share_msg"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/share_msg"
+            android:layout_below="@+id/share_msg"
             android:hint="text"
             android:imeOptions="actionDone"
             android:lines="1"

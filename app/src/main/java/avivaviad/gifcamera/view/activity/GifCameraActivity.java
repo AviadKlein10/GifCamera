@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -219,8 +218,10 @@ public class GifCameraActivity extends BaseActivity implements BaseView, GifCame
 
     @Override
     public void onSharePressed() {
+        String messageTxt = SharedPreferencesManager.loadValue(this,SharedPreferencesManager.KEY_SHARE_MSG);
         Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
         shareIntent.setType("image/gif");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, messageTxt);
         shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(gifUri));
         startActivity(Intent.createChooser(shareIntent, "Gif"));
     }

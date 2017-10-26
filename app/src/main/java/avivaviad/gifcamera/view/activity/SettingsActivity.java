@@ -31,12 +31,14 @@ import com.github.danielnilsson9.colorpickerview.dialog.ColorPickerDialogFragmen
 import java.util.HashMap;
 
 import avivaviad.gifcamera.R;
+import avivaviad.gifcamera.RealmHelper;
 import avivaviad.gifcamera.SharedPreferencesManager;
 import avivaviad.gifcamera.Utils;
 import avivaviad.gifcamera.presenter.BaseView;
 import avivaviad.gifcamera.presenter.Presenter;
 import avivaviad.gifcamera.presenter.SettingsPresenter;
 import avivaviad.gifcamera.view.BaseActivity;
+import io.realm.Realm;
 
 import static avivaviad.gifcamera.SharedPreferencesManager.KEY_FONT_COLOR;
 
@@ -47,13 +49,13 @@ import static avivaviad.gifcamera.SharedPreferencesManager.KEY_FONT_COLOR;
 public class SettingsActivity extends BaseActivity implements BaseView, SettingsPresenter.SettingsPresenterCallBack, AdapterView.OnItemSelectedListener, View.OnClickListener, CompoundButton.OnCheckedChangeListener, ColorPickerDialogFragment.ColorPickerDialogListener {
     private static final int READ_RC_SMALL_IMG = 41, READ_RC_FRAME = 42;
     private EditText edit_duration_for_each_frame, edit_capture_frame_rate,
-            edit_frame_count, edit_title, edit_tag_db;
+            edit_frame_count, edit_title, edit_tag_db,edit_share_msg;
     private Spinner spinner_quality, spinner_font, spinner_font_size;
     private Button btn_add_frame, btn_add_image, btn_gif_gallery, btn_save, btn_font_color;
     private CheckBox checkBoxAddFrame, checkBoxAddImage;
     private ImageView img_frame, img_small;
     private int[] arrFontSize = {18, 22, 26, 30, 34, 38, 42};
-    private String[] arrFontType = {"varelaRound.ttf", "anka.ttf", "dorian.ttf", "makabi.ttf", "noot.otf"};
+    private String[] arrFontType = {"varelaRound.ttf", "anka.ttf", "dorian.ttf", "makabi.ttf", "noot.otf","gan.ttf"};
     private Context context;
     private ColorPickerDialogFragment colorPickerDialogFragment;
 
@@ -83,6 +85,7 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
         edit_title = (EditText) findViewById(R.id.edit_title);
         edit_capture_frame_rate = (EditText) findViewById(R.id.edit_capture_frame_rate);
         edit_tag_db = (EditText) findViewById(R.id.edit_tag_db);
+        edit_share_msg = (EditText) findViewById(R.id.edit_share_msg);
         checkBoxAddFrame = (CheckBox) findViewById(R.id.checkbox_frame);
         checkBoxAddImage = (CheckBox) findViewById(R.id.checkbox_image);
         img_frame = (ImageView) findViewById(R.id.img_frame);
@@ -116,7 +119,7 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
 
         String[] quality = new String[]{"low", "medium", "high"};
         String[] fontSize = new String[]{"18", "22", "26", "30", "34", "38", "42"};
-        String[] fontType = new String[]{"ורלה", "אנקה", "דוריאן", "מכבי", "נוט"};
+        String[] fontType = new String[]{"ורלה", "אנקה", "דוריאן", "מכבי", "נוט", "גן"};
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, quality);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinner_quality.setAdapter(spinnerAdapter);
@@ -166,7 +169,7 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
         for (int i = 0; i < hmLastValues.size(); i++) {
             strIndex = String.valueOf(i);
             loadedValue = hmLastValues.get(strIndex);
-            String loadedValueReformated = Utils.reforrmatColorToNum(loadedValue);
+//            String loadedValueReformated = Utils.reforrmatColorToNum(loadedValue);
 
             switch (strIndex) {
                 case "0":
@@ -191,9 +194,16 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
                     spinner_font.setSelection(Integer.parseInt(loadedValue));
                     break;
                 case "7":
-                    // int color = (Color.parseColor(loadedValue));
+                    int color;
+                    Log.d("thiscolor",loadedValue+"");
+                    loadedValue = Utils.reforrmatColorToNum(loadedValue);
+                    if(!loadedValue.equalsIgnoreCase("-1")){
+                        color= (Color.parseColor(loadedValue));
+                    }else{
+                        color = Color.WHITE;
+                    }
                     colorPickerDialogFragment = ColorPickerDialogFragment
-                            .newInstance(0, "ok", null, Color.WHITE, true);
+                            .newInstance(0, "ok", null, color, true);
 
                     colorPickerDialogFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.DarkPickerDialogTheme);
                     break;
@@ -290,6 +300,10 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
         saveValue(SharedPreferencesManager.KEY_TITLE, edit_title.getText());
         saveValue(SharedPreferencesManager.KEY_CAPTURE_FRAME_RATE, edit_capture_frame_rate.getText());
         saveValue(SharedPreferencesManager.KEY_DB_TAG, edit_tag_db.getText());
+        if(edit_tag_db.getText().toString().trim().length()!=0){
+            RealmHelper.saveLastTag(edit_tag_db.getText().toString(), Realm.getDefaultInstance());
+        }
+        saveValue(SharedPreferencesManager.KEY_SHARE_MSG, edit_share_msg.getText());
         if (!edit_frame_count.getText().toString().trim().isEmpty()) {
             if (Integer.parseInt(edit_frame_count.getText().toString()) < 2) {
                 Toast.makeText(this, "Minimum frame count is 2\nSaved successfully", Toast.LENGTH_LONG).show();
@@ -391,6 +405,7 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
 
     @Override
     public void onColorSelected(int dialogId, int color) {
+        Log.d("thisColorSelected",color+"");
         SharedPreferencesManager.saveValue(context, KEY_FONT_COLOR, color + "");
     }
 

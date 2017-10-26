@@ -1,13 +1,17 @@
 package avivaviad.gifcamera.view.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -34,28 +38,46 @@ public class GifGalleryActivity extends BaseActivity implements GifGalleryPresen
     private AdapterGifGrid adapter;
     private List<GifObject> mArrGifs;
     private EditText search;
+    private Spinner spinnerLastTag;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gif_grid);
-        // data to populate the RecyclerView with
-
         mArrGifs = new ArrayList<>();
-
-        // set up the RecyclerView
-        // Log.d("fckckck",mArrGifs.get(0).getBitmapPaths().get(1)+"");
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.gif_grid);
         int numberOfColumns = 3;
         search = (EditText) findViewById(R.id.gallary_ed);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
+        spinnerLastTag = (Spinner) findViewById(R.id.spinner_last_tags);
+        final String [] items = RealmHelper.loadLastTags(Realm.getDefaultInstance());
+        if(items!=null){
+            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
+            spinnerLastTag.setAdapter(spinnerAdapter);
+            spinnerLastTag.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    ((GifGalleryPresenter) mPresenter).searchGifsByTag(items[position], Realm.getDefaultInstance());
+                }
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
+            });
+            recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
+        }
         adapter = new AdapterGifGrid(this, mArrGifs);
         adapter.setClickListener(this);
         adapter.setLongClickListener(this);
         recyclerView.setAdapter(adapter);
 
         search.addTextChangedListener(this);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                spinnerLastTag.performClick();
+            }
+        },1000);
+
 
     }
 

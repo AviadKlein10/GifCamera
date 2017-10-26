@@ -24,6 +24,7 @@ public class SharedPreferencesManager {
     public static final String KEY_IMAGE_SRC = "11";
     public static final String KEY_DB_TAG = "12";
     public static final String KEY_FIRST_INITIALIZE = "13";
+    public static final String KEY_SHARE_MSG = "14";
 
 
     public static void saveValue(Context context,String key,String value){

@@ -51,13 +51,16 @@ public class GifCameraPresenter extends Presenter<GifCameraActivity> implements 
 
     private void addFrameToPreview(Context context) {
         boolean cbAddText = false;
+        boolean shouldUseSmallFrame = false;
         if (!SharedPreferencesManager.loadValue(context, SharedPreferencesManager.KEY_TITLE).trim().isEmpty()) {
             cbAddText = true;
         }
-
+        if(!cbAddText&&!cbAddImage){
+            shouldUseSmallFrame = true;
+        }
         for (int i = 0; i < previewBitmaps.size(); i++) {
             if (cbAddFrame) {
-                addFrameToBitmaps(context, i);
+                addFrameToBitmaps(context, i, shouldUseSmallFrame);
                 if (cbAddImage) {
                     addSmallImageToBitmaps(context, i);
                 }
@@ -72,7 +75,7 @@ public class GifCameraPresenter extends Presenter<GifCameraActivity> implements 
     }
 
     private void addTextToBitmaps(Context context, int i) {
-        String[] arrFontType = {"varelaRound.ttf", "anka.ttf", "dorian.ttf", "makabi.ttf", "noot.otf"};
+        String[] arrFontType = {"varelaRound.ttf", "anka.ttf", "dorian.ttf", "makabi.ttf", "noot.otf","gan.ttf"};
         int[] arrFontSize = {18, 22, 26, 30, 34, 38, 42};
 
         String title = SharedPreferencesManager.loadValue(context, SharedPreferencesManager.KEY_TITLE);
@@ -90,14 +93,12 @@ public class GifCameraPresenter extends Presenter<GifCameraActivity> implements 
         Bitmap bitmap = BitmapEditing.addSmallImg(context, previewBitmaps.get(i), srcImage);
         previewBitmaps.set(i, bitmap);
         // gifBitmaps.set(i, Utils.getResizedBitmap(previewBitmaps.get(i), gifQuality));
-
-
     }
 
 
-    private void addFrameToBitmaps(Context context, int i) {
+    private void addFrameToBitmaps(Context context, int i, boolean shouldUseSmallFrame) {
         String srcFrame = SharedPreferencesManager.loadValue(context, SharedPreferencesManager.KEY_FRAME_SRC);
-        Bitmap bitmap = BitmapEditing.addFrame(context, previewBitmaps.get(i), srcFrame);
+        Bitmap bitmap = BitmapEditing.addFrame(context, previewBitmaps.get(i), srcFrame,shouldUseSmallFrame);
         previewBitmaps.set(i, bitmap);
         //gifBitmaps.set(i, Utils.getResizedBitmap(previewBitmaps.get(i), gifQuality));
     }

@@ -38,6 +38,7 @@ public class SettingsPresenter extends Presenter<SettingsActivity> implements Se
         hmLastValues.put(SharedPreferencesManager.KEY_CHECK_ADD_IMAGE,getValueOf(context,SharedPreferencesManager.KEY_CHECK_ADD_IMAGE));
         hmLastValues.put(SharedPreferencesManager.KEY_IMAGE_SRC,getValueOf(context,SharedPreferencesManager.KEY_IMAGE_SRC));
         hmLastValues.put(SharedPreferencesManager.KEY_DB_TAG,getValueOf(context,SharedPreferencesManager.KEY_DB_TAG));
+        hmLastValues.put(SharedPreferencesManager.KEY_SHARE_MSG,getValueOf(context,SharedPreferencesManager.KEY_SHARE_MSG));
         return hmLastValues;
     }
 
