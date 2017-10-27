@@ -57,6 +57,8 @@ public class GifCameraPresenter extends Presenter<GifCameraActivity> implements 
         }
         if(!cbAddText&&!cbAddImage){
             shouldUseSmallFrame = true;
+        }else{
+            shouldUseSmallFrame = false;
         }
         for (int i = 0; i < previewBitmaps.size(); i++) {
             if (cbAddFrame) {
@@ -82,6 +84,8 @@ public class GifCameraPresenter extends Presenter<GifCameraActivity> implements 
         String fontType = arrFontType[Integer.parseInt(SharedPreferencesManager.loadValue(context, SharedPreferencesManager.KEY_FONT_TYPE))];
         int fontSize = arrFontSize[Integer.parseInt(SharedPreferencesManager.loadValue(context, SharedPreferencesManager.KEY_FONT_SIZE))];
         String fontColor = SharedPreferencesManager.loadValue(context, SharedPreferencesManager.KEY_FONT_COLOR);//TODO fix load font color
+        Log.d("thiscolorsave",fontColor+"");
+
         Bitmap bitmap = BitmapEditing.drawTextToBitmap(context, previewBitmaps.get(i), title, fontType, fontSize, Integer.parseInt(fontColor));
         previewBitmaps.set(i, bitmap);
         //gifBitmaps.set(i, Utils.getResizedBitmap(previewBitmaps.get(i), gifQuality));
@@ -250,7 +254,6 @@ public class GifCameraPresenter extends Presenter<GifCameraActivity> implements 
                 gifQuality = 300;
                 break;
             case "2":
-                previewQuality = previewQuality;
                 Log.d("mala", previewQuality + "");
                 gifQuality = 600;
                 break;

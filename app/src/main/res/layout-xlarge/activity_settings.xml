@@ -15,7 +15,7 @@
             android:id="@+id/capture_frame_rate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Capture frame rate:
+            android:text="Capture frame rate:\n
 מומלץ בין 450- ל1000"
             android:textColor="#ffffff"
             android:textSize="30sp" />
@@ -80,7 +80,7 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/edit_capture_frame_rate"
             android:layout_below="@+id/edit_capture_frame_rate"
-            android:text="Duration of each frame:
+            android:text="Duration of each frame:\n
 מומלץ בין 80- ל220"
             android:textColor="#ffffff"
             android:textSize="30sp" />
@@ -107,7 +107,7 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/edit_duration_for_each_frame"
             android:layout_below="@+id/edit_duration_for_each_frame"
-            android:text="Frame count:
+            android:text="Frame count:\n
 מומלץ בין 4- ל22"
             android:textColor="#ffffff"
             android:textSize="30sp" />
@@ -174,12 +174,26 @@
             android:textColorHint="@android:color/darker_gray"
             android:textSize="26sp" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edit_title"
+            android:id="@+id/layout_font"
+            android:weightSum="1"
+            android:orientation="horizontal">
+            
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.333"
+                android:orientation="vertical">
+        
         <TextView
             android:id="@+id/font"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/edit_title"
-            android:layout_below="@+id/edit_title"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
             android:text="Font:"
             android:textColor="#ffffff"
             android:textSize="30sp" />
@@ -188,29 +202,38 @@
             android:id="@+id/spinner_font"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/font"
             android:layout_below="@+id/font"
+            android:layout_centerHorizontal="true"
             android:background="#ffffff" />
-
+            </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.333"
+                    android:orientation="vertical">
         <TextView
             android:id="@+id/font_size"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@id/font"
-            android:layout_centerHorizontal="true"
             android:text="Font size:"
             android:textColor="#ffffff"
-            android:textSize="30sp" />
+            android:textSize="30sp"
+            android:layout_centerHorizontal="true"/>
 
-        <Spinner
-            android:id="@+id/spinner_font_size"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignRight="@+id/font_size"
-            android:layout_alignStart="@+id/font_size"
-            android:layout_below="@+id/font_size"
-            android:background="#ffffff" />
-
+                    <Spinner
+                        android:id="@+id/spinner_font_size"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+android:layout_below="@id/font_size"
+                        android:background="#ffffff" />
+                </RelativeLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.333"
+            android:gravity="center"
+            android:orientation="vertical">
         <TextView
             android:id="@+id/font_color"
             android:layout_width="wrap_content"
@@ -225,27 +248,31 @@
             android:id="@+id/btn_font_color"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-
-            android:layout_alignLeft="@+id/font_color"
-            android:layout_alignRight="@+id/font_color"
-            android:layout_below="@+id/font_color"
-            android:layout_marginStart="14dp"
-
             android:background="@android:color/darker_gray"
-            android:padding="10dp"
             android:text="Pick color"
-            android:textColor="#ffffff" />
+            android:textColor="#ffffff"/>
+        </LinearLayout>
+        </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/layout_font"
+            android:id="@+id/layout_imgs"
+            android:weightSum="1"
+            android:orientation="horizontal">
 
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:orientation="vertical">
         <TextView
             android:id="@+id/add_frame"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/spinner_font"
-            android:paddingBottom="20dp"
-            android:paddingRight="10dp"
-            android:paddingTop="20dp"
+            android:padding="15dp"
+            android:gravity="left"
             android:text="Add frame:"
             android:textColor="#ffffff"
             android:textSize="30sp" />
@@ -254,33 +281,47 @@
             android:id="@+id/btn_add_frame"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/add_frame"
-            android:layout_below="@+id/add_frame"
             android:background="@android:color/darker_gray"
             android:padding="10dp"
+            android:paddingBottom="20dp"
             android:text="Choose"
             android:textColor="#ffffff"
-            android:textSize="26sp" />
+            android:textSize="26sp"
+            android:layout_below="@+id/add_frame"
+            android:layout_alignEnd="@+id/add_frame"
+            android:layout_marginEnd="26dp" />
 
         <CheckBox
             android:id="@+id/checkbox_frame"
             style="@android:style/Widget.Holo.CompoundButton.CheckBox"
             android:layout_width="wrap_content"
-
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/add_frame"
             android:layout_toRightOf="@+id/add_frame"
             android:buttonTint="@android:color/holo_blue_dark"
             android:enabled="true" />
-
+            <ImageView
+                android:id="@+id/img_frame"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignTop="@+id/checkbox_frame"
+                android:layout_marginStart="34dp"
+                app:srcCompat="@drawable/logo_gif"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/checkbox_frame"/>
+</RelativeLayout>
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:orientation="vertical">
         <TextView
             android:id="@+id/add_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/btn_add_frame"
-            android:paddingBottom="20dp"
-            android:paddingRight="10dp"
-            android:paddingTop="20dp"
+            android:padding="15dp"
+            android:gravity="left"
             android:text="Add image:"
             android:textColor="#ffffff"
             android:textSize="30sp" />
@@ -289,14 +330,15 @@
             android:id="@+id/btn_add_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/add_image"
-            android:layout_below="@+id/add_image"
             android:background="@android:color/darker_gray"
             android:padding="10dp"
             android:paddingBottom="20dp"
             android:text="Choose"
             android:textColor="#ffffff"
-            android:textSize="26sp" />
+            android:textSize="26sp"
+            android:layout_below="@+id/add_image"
+            android:layout_alignEnd="@+id/add_image"
+            android:layout_marginEnd="26dp" />
 
         <CheckBox
             android:id="@+id/checkbox_image"
@@ -306,14 +348,24 @@
             android:layout_toRightOf="@+id/add_image"
             android:buttonTint="@android:color/holo_blue_dark"
             android:enabled="true" />
+                <ImageView
+                    android:id="@+id/img_small"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignTop="@+id/checkbox_image"
+                    android:layout_marginStart="34dp"
+                    app:srcCompat="@drawable/gif_bg_2"
+                    android:layout_toRightOf="@id/checkbox_image"
+                    android:layout_centerVertical="true"/>
+            </RelativeLayout>
+</LinearLayout>
 
 
         <TextView
             android:id="@+id/tag_db"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/btn_add_image"
-            android:layout_below="@+id/btn_add_image"
+            android:layout_below="@+id/layout_imgs"
             android:paddingTop="20dp"
             android:text="Tag title for DB:"
             android:textColor="#ffffff"
@@ -333,6 +385,7 @@
             android:textColor="#ffffff"
             android:textColorHint="@android:color/darker_gray"
             android:textSize="26sp" />
+
         <TextView
             android:id="@+id/share_msg"
             android:layout_width="wrap_content"
@@ -359,23 +412,9 @@
             android:textColorHint="@android:color/darker_gray"
             android:textSize="26sp" />
 
-        <ImageView
-            android:id="@+id/img_frame"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_alignTop="@+id/checkbox_frame"
-            android:layout_marginStart="34dp"
-            android:layout_toEndOf="@+id/tag_db"
-            app:srcCompat="@drawable/logo_gif" />
 
-        <ImageView
-            android:id="@+id/img_small"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_alignStart="@+id/img_frame"
-            android:layout_alignTop="@+id/checkbox_image"
-            android:layout_marginTop="16dp"
-            app:srcCompat="@drawable/logo_gif" />
+
+
 
     </RelativeLayout>
 </ScrollView>

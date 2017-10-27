@@ -41,7 +41,7 @@ public class BitmapEditing {
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(fontColor);
         paint.setTextSize((int) (fontSize * scale));
-        paint.setShadowLayer(1f, 0f, 1f, Color.WHITE);
+        paint.setShadowLayer(1f, 0f, 1f, Color.BLACK);
         Typeface plain = Typeface.createFromAsset(context.getAssets(), "fonts/" + fontResource);
         paint.setTypeface(plain);
 
@@ -57,8 +57,8 @@ public class BitmapEditing {
             int originalImageWidth = bitmap.getWidth();
             int originalImageHeight = bitmap.getHeight();
 
-            int textX = ((originalImageWidth / 100) * 80) - bounds.width();
-            int textY = lineDowner + ((originalImageHeight / 100) * 89);
+            int textX = ((originalImageWidth / 100) * 100) - bounds.width();
+            int textY = lineDowner + ((originalImageHeight / 100) * 94);
             canvas.drawText(lines.get(i), textX, textY, paint);
 
             lineDowner = lineDowner + 100;
@@ -136,10 +136,10 @@ public class BitmapEditing {
         int height = bitmap.getHeight();
         Bitmap image,bmOverlay;
         if(shouldUseSmallFrame){
-            bmOverlay = Bitmap.createScaledBitmap(bitmap, width, height, false);
-            image= Bitmap.createScaledBitmap(border,border.getWidth(),border.getHeight(), false);
+            image = Bitmap.createScaledBitmap(bitmap,border.getWidth(), border.getHeight(), false);
+            bmOverlay= Bitmap.createScaledBitmap(border,border.getWidth(), border.getHeight(), false);
         }else{
-            image = Bitmap.createScaledBitmap(bitmap, border.getWidth(), 8 * (border.getHeight()/10), false);
+            image = Bitmap.createScaledBitmap(bitmap, border.getWidth(), 9 * (border.getHeight()/10), false);
             bmOverlay = Bitmap.createBitmap(border.getWidth(), border.getHeight(), border.getConfig());
         }
         //Bitmap change = Bitmap.createScaledBitmap(bitmap, width+100, height+100, false);
@@ -184,7 +184,7 @@ public class BitmapEditing {
         Paint paint = new Paint();
         paint.setFilterBitmap(true);
         int smallImageX = (originalImageWidth / 100) * 20;
-        int smallImageY = (originalImageHeight / 100) * 85;
+        int smallImageY = (originalImageHeight / 100) * 89;
 
         Canvas canvas = new Canvas(originalImage);
         canvas.drawBitmap(smallImg, smallImageX, smallImageY, paint);

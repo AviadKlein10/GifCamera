@@ -56,7 +56,7 @@ public class GifGalleryActivity extends BaseActivity implements GifGalleryPresen
         setContentView(R.layout.activity_gif_grid);
         mArrGifs = new ArrayList<>();
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.gif_grid);
-        int numberOfColumns = 3;
+        int numberOfColumns = 6;
         search = (EditText) findViewById(R.id.gallary_ed);
         spinnerLastTag = (Spinner) findViewById(R.id.spinner_last_tags);
         final String [] items = RealmHelper.loadLastTags(Realm.getDefaultInstance());

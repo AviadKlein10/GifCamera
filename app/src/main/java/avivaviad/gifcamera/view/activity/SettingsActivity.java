@@ -41,6 +41,7 @@ import avivaviad.gifcamera.view.BaseActivity;
 import io.realm.Realm;
 
 import static avivaviad.gifcamera.SharedPreferencesManager.KEY_FONT_COLOR;
+import static avivaviad.gifcamera.SharedPreferencesManager.loadValue;
 
 /**
  * Created by Aviad on 14/08/2017.
@@ -66,7 +67,7 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
         setContentView(R.layout.activity_settings);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         context = getApplicationContext();
-        saveDefaultColor();
+      //  saveDefaultColor();
         initViews();
         loadViewLastSettings();
 
@@ -165,7 +166,7 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
         HashMap<String, String> hmLastValues = ((SettingsPresenter) mPresenter).getLastValues(this);
         String strIndex = "";
         String loadedValue;
-        Log.d("firstfirst", "last" + hmLastValues.get(0 + ""));
+        Log.d("firstfirst", "last" + hmLastValues.get("7"));
         for (int i = 0; i < hmLastValues.size(); i++) {
             strIndex = String.valueOf(i);
             loadedValue = hmLastValues.get(strIndex);
@@ -195,13 +196,15 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
                     break;
                 case "7":
                     int color;
+                    SharedPreferencesManager.loadValue(context,KEY_FONT_COLOR);
                     Log.d("thiscolor",loadedValue+"");
                     loadedValue = Utils.reforrmatColorToNum(loadedValue);
-                    if(!loadedValue.equalsIgnoreCase("-1")){
-                        color= (Color.parseColor(loadedValue));
+                    if(!loadedValue.equalsIgnoreCase("-1")&& !loadedValue.equalsIgnoreCase("ffffff")){
+                        color= Integer.parseInt(Utils.reforrmatColorToNum(loadedValue));
                     }else{
                         color = Color.WHITE;
                     }
+                    edit_title.setTextColor(color);
                     colorPickerDialogFragment = ColorPickerDialogFragment
                             .newInstance(0, "ok", null, color, true);
 
@@ -234,6 +237,9 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
                     break;
                 case "12":
                     edit_tag_db.setText(loadedValue);
+                    break;
+                case "13":
+                    edit_share_msg.setText(loadedValue);
                     break;
             }
         }
@@ -406,7 +412,8 @@ public class SettingsActivity extends BaseActivity implements BaseView, Settings
     @Override
     public void onColorSelected(int dialogId, int color) {
         Log.d("thisColorSelected",color+"");
-        SharedPreferencesManager.saveValue(context, KEY_FONT_COLOR, color + "");
+        edit_title.setTextColor(color);
+        SharedPreferencesManager.saveValue(context, KEY_FONT_COLOR, color+"" );
     }
 
     @Override

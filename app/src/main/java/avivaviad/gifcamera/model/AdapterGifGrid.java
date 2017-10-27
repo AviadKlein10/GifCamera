@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
@@ -45,7 +44,7 @@ public class AdapterGifGrid extends RecyclerView.Adapter<AdapterGifGrid.ViewHold
     public void onBindViewHolder(ViewHolder holder, int position) {
         String tag = mData.get(position).getmGifTag();
         Glide.with(mInflater.getContext()).load(mData.get(position).getmGifSrc()).into(holder.imgGif);
-        holder.txtTag.setText(tag);
+      //  holder.txtTag.setText(tag);
         int id = Integer.parseInt(mData.get(position).getTimeStamp());
 
         if (selectedIds.contains(id)){
@@ -74,13 +73,13 @@ public class AdapterGifGrid extends RecyclerView.Adapter<AdapterGifGrid.ViewHold
 
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
-        TextView txtTag;
+       // TextView txtTag;
         ImageView imgGif;
         FrameLayout rootView;
 
         ViewHolder(View itemView) {
             super(itemView);
-            txtTag = (TextView) itemView.findViewById(R.id.gif_tag);
+           // txtTag = (TextView) itemView.findViewById(R.id.gif_tag);
             imgGif = (ImageView) itemView.findViewById(R.id.gif_img);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);

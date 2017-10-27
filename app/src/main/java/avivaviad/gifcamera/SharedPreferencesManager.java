@@ -23,8 +23,8 @@ public class SharedPreferencesManager {
     public static final String KEY_CHECK_ADD_IMAGE = "10";
     public static final String KEY_IMAGE_SRC = "11";
     public static final String KEY_DB_TAG = "12";
-    public static final String KEY_FIRST_INITIALIZE = "13";
-    public static final String KEY_SHARE_MSG = "14";
+    public static final String KEY_SHARE_MSG = "13";
+    private static final String KEY_FIRST_INITIALIZE = "14";
 
 
     public static void saveValue(Context context,String key,String value){
@@ -46,7 +46,7 @@ public class SharedPreferencesManager {
         saveValue(context,KEY_TITLE,"");
         saveValue(context,KEY_FONT_SIZE,"2");
         saveValue(context,KEY_FONT_TYPE,"0");
-        saveValue(context,KEY_FONT_COLOR,"#ffffff");
+        saveValue(context,KEY_FONT_COLOR,"-1");
         saveValue(context,KEY_CHECK_ADD_FRAME,"0");
         saveValue(context,KEY_FRAME_SRC,"");
         saveValue(context,KEY_CHECK_ADD_IMAGE,"0");
