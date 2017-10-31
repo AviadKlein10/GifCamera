@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -46,13 +47,13 @@ public class StartPresenter extends Presenter<StartActivity> implements OnStartC
 
     private boolean isExpired() {
         try {
-            return  (new SimpleDateFormat("dd/MM/yyyy").parse("07/11/2017").before(new Date()));
+            return  (new SimpleDateFormat("dd/MM/yyyy").parse("10/11/2017").before(new Date()));
 
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
-        return false;
+        Toast toast = Toast.makeText(mView.getApplicationContext(), "expired", Toast.LENGTH_LONG);
+        toast.show();        return false;
     }
 
     @Override

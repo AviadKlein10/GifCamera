@@ -155,9 +155,6 @@ public class GifGalleryActivity extends BaseActivity implements GifGalleryPresen
             case R.id.action_delete:
                 //just to show selected items.
                 buildAlertDialog(selectedIds);
-                for (int i = 0; i < mArrGifs.size(); i++) {
-
-                }
               //  Toast.makeText(this, "Selected items are :" + stringBuilder.toString(), Toast.LENGTH_SHORT).show();
                 return true;
         }
@@ -208,8 +205,8 @@ public class GifGalleryActivity extends BaseActivity implements GifGalleryPresen
                 Log.d("thisdelete",positions.get(i)+"");
                 RealmHelper.removeGif(String.valueOf(positions.get(i)), Realm.getDefaultInstance());
             }
-           // RealmHelper.removeGif(mArrGifs.get(position).getmGifSrc(), Realm.getDefaultInstance());
-            adapter.notifyDataSetChanged();
+            adapter.setdata(mArrGifs);
+            //adapter.notifyDataSetChanged();
         }
     }
 
