@@ -10,9 +10,11 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -30,7 +32,7 @@ public class PreviewFrag extends Fragment implements View.OnClickListener {
     ///
 
     private boolean cameFromGallary;
-    private ImageView shareImage, backImage;
+    private ImageView createGifBtn, backImage;
     private PreviewCallBack listener;
     private int frame_rate;
     private float alpha;
@@ -38,6 +40,7 @@ public class PreviewFrag extends Fragment implements View.OnClickListener {
     private Runnable runnebleFade;
     private int fromActivity;
     private TextView loadingTxtView;
+    private ImageButton shareBtn;
 
 
     public void setCameFromGallary(boolean cameFromGallary) {
@@ -74,9 +77,10 @@ public class PreviewFrag extends Fragment implements View.OnClickListener {
         View v = inflater.inflate(R.layout.fragment_preview, container, false);
 
         backImage = (ImageView) v.findViewById(R.id.back);
-        shareImage = (ImageView) v.findViewById(R.id.share);
+        createGifBtn = (ImageView) v.findViewById(R.id.share);
         imageView = (ImageView) v.findViewById(R.id.preview_image);
         progressBar = (ProgressBar) v.findViewById(R.id.progressBar);
+        shareBtn = (ImageButton) v.findViewById(R.id.shareBtn);
         /*if(getFromActivity()!= Constans.ACTIVITY_GALLERY){
            // v.findViewById(R.id.recapture).setVisibility(View.VISIBLE);
         }*/
@@ -84,23 +88,31 @@ public class PreviewFrag extends Fragment implements View.OnClickListener {
         alpha = 0.5f;
         animationDrawable = new AnimationDrawable();
         animationDrawable.setOneShot(false);
-        shareImage.setOnClickListener(this);
+        createGifBtn.setOnClickListener(this);
+        shareBtn.setOnClickListener(this);
         backImage.setOnClickListener(this);
 
-        shareImage.setAlpha(alpha);
+        createGifBtn.setAlpha(alpha);
         handler = new Handler();
         runnebleFade = new Runnable() {
             @Override
             public void run() {
-                shareImage.setAlpha(alpha);
+                createGifBtn.setAlpha(alpha);
                 fadeInButtonShare();
             }
         };
         fadeInButtonShare();
-        shareImage.setEnabled(false);
+        createGifBtn.setEnabled(false);
 
         if(cameFromGallary){
-            makeGifSharable();
+            createGifBtn.setVisibility(View.INVISIBLE);
+            shareBtn.setEnabled(true);
+            loadingTxtView.setVisibility(View.INVISIBLE);
+            backImage.setImageResource(R.drawable.no_gallery_btn);
+        }else{
+            createGifBtn.setVisibility(View.VISIBLE);
+            shareBtn.setEnabled(false);
+            backImage.setImageResource(R.drawable.no_btn);
         }
         return v;
     }
@@ -115,11 +127,17 @@ public class PreviewFrag extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.share:
-                listener.onSharePressed();
+               // listener.onSharePressed(); // TODO add share when finish generate
+                listener.onCreateGifPressed();
                 break;
 
             case R.id.back:
                 listener.onBackClicked(getFromActivity());
+                break;
+
+
+            case R.id.shareBtn:
+                listener.onSharePressed();
                 break;
 
 
@@ -153,11 +171,31 @@ public class PreviewFrag extends Fragment implements View.OnClickListener {
         handler.post(runnebleFade);
         loadingTxtView.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.INVISIBLE);
-        shareImage.setAlpha(1f);
-        shareImage.setEnabled(true);
+        createGifBtn.setAlpha(1f);
+        createGifBtn.setEnabled(true);
+    }
+    public void makeButtonOKEnable() {
+        handler.post(runnebleFade);
+        loadingTxtView.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.INVISIBLE);
+        createGifBtn.setAlpha(1f);
+        createGifBtn.setEnabled(true);
     }
 
 
+    public void startProgressDialog() {
+        progressBar.setVisibility(View.VISIBLE);
+        loadingTxtView.setVisibility(View.VISIBLE);
+    }
+
+    public void stopProgressBar() {
+        createGifBtn.setEnabled(false);
+        shareBtn.setEnabled(true);
+        progressBar.setVisibility(View.INVISIBLE);
+        loadingTxtView.setVisibility(View.INVISIBLE);
+        Toast.makeText(getActivity().getApplicationContext(), "Gif saved successfully", Toast.LENGTH_SHORT).show();
+
+    }
 }
 
 

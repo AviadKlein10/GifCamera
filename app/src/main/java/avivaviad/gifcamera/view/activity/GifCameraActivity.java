@@ -193,7 +193,7 @@ public class GifCameraActivity extends BaseActivity implements BaseView, GifCame
             public void run() {
                 previewFrag.startImagesPreview(((GifCameraPresenter) mPresenter).getPreviewBitmaps(getApplicationContext()));
                 ((GifCameraPresenter) mPresenter).generateGifFromBitmaps();
-
+                previewFrag.makeButtonOKEnable();
             }
         }, 1000);
         inPreview = true;
@@ -224,6 +224,11 @@ public class GifCameraActivity extends BaseActivity implements BaseView, GifCame
         shareIntent.putExtra(Intent.EXTRA_TEXT, messageTxt);
         shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(gifUri));
         startActivity(Intent.createChooser(shareIntent, "Gif"));
+    }
+
+    @Override
+    public void onCreateGifPressed(){
+        startGifCreation();
     }
 
     @Override
@@ -258,8 +263,15 @@ public class GifCameraActivity extends BaseActivity implements BaseView, GifCame
         finish();
     }
 
+    @Override
+    public void startGifCreation() {
+        previewFrag.startProgressDialog();
+        ((GifCameraPresenter) mPresenter).createGifFile();
+    }
+
 
     public void handleGifReady(String uri) {
+        previewFrag.stopProgressBar();
         gifUri = uri;
         ((GifCameraPresenter) mPresenter).saveBitmapsLocally(this, uri);
         if (!cameFromGallary) {

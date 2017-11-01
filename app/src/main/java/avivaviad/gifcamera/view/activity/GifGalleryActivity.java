@@ -200,11 +200,13 @@ public class GifGalleryActivity extends BaseActivity implements GifGalleryPresen
     @Override
     public void onFinishYesNoDialog(boolean toDelete, ArrayList<Integer> positions) {
         // -- Finish dialog box show msg
+        Log.d("maarg",mArrGifs.size()+"");
         if(toDelete){
             for (int i = 0; i < positions.size(); i++) {
                 Log.d("thisdelete",positions.get(i)+"");
                 RealmHelper.removeGif(String.valueOf(positions.get(i)), Realm.getDefaultInstance());
             }
+
             adapter.setdata(mArrGifs);
             //adapter.notifyDataSetChanged();
         }

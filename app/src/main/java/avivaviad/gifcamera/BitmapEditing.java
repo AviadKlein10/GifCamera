@@ -183,11 +183,12 @@ public class BitmapEditing {
         int originalImageHeight = originalImage.getHeight();
         Paint paint = new Paint();
         paint.setFilterBitmap(true);
-        int smallImageX = (originalImageWidth / 100) * 20;
+        int smallImageX = (originalImageWidth / 100) * 25;
         int smallImageY = (originalImageHeight / 100) * 89;
+        int centerSmallImagX = smallImg.getWidth()/2;
 
         Canvas canvas = new Canvas(originalImage);
-        canvas.drawBitmap(smallImg, smallImageX, smallImageY, paint);
+        canvas.drawBitmap(smallImg, smallImageX-centerSmallImagX, smallImageY, paint);
         return originalImage;
     }
 }

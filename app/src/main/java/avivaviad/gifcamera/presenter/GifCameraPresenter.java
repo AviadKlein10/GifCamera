@@ -36,6 +36,7 @@ public class GifCameraPresenter extends Presenter<GifCameraActivity> implements 
     private int fontSize = 26;
     private int framesCount = 7;
     private static final int COUNT_DOWN_TIME = 3;
+    private ArrayList<Bitmap> gifsBitmaps;
 
     private ArrayList<Bitmap> previewBitmaps;
     //private ArrayList<Bitmap> gifBitmaps;
@@ -353,10 +354,14 @@ public class GifCameraPresenter extends Presenter<GifCameraActivity> implements 
     }
 
     private void resizeImagesToGifSize(ArrayList<Bitmap> images) {
-        ArrayList<Bitmap> gifsBitmaps = new ArrayList<>();
+        gifsBitmaps = new ArrayList<>();
         for (int i = 0; i < images.size(); i++) {
             gifsBitmaps.add(Utils.getResizedBitmap(images.get(i), gifQuality,false));
         }
+       // new GenerateGifFile(gifsBitmaps, GifCameraActivity.DURATION_FOR_EACH_FRAME, this).start();
+    }
+
+    public void createGifFile(){
         new GenerateGifFile(gifsBitmaps, GifCameraActivity.DURATION_FOR_EACH_FRAME, this).start();
     }
 

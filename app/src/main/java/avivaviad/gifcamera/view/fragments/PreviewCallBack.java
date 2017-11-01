@@ -6,5 +6,7 @@ package avivaviad.gifcamera.view.fragments;
 
 public interface PreviewCallBack {
     void onSharePressed();
+    void onCreateGifPressed();
     void onBackClicked(int fromActivity);
+    void startGifCreation();
 }
