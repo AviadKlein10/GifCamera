@@ -10,6 +10,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -57,10 +58,13 @@ public class BitmapEditing {
             int originalImageWidth = bitmap.getWidth();
             int originalImageHeight = bitmap.getHeight();
 
-            int textX = ((originalImageWidth / 100) * 100) - bounds.width();
+          //  int textX = ((originalImageWidth / 100) * 100) - bounds.width();
             int textY = lineDowner + ((originalImageHeight / 100) * 94);
-            canvas.drawText(lines.get(i), textX, textY, paint);
-
+            Log.d("wiwiwi",canvas.getWidth()+"");
+            float textWidth = paint.measureText(lines.get(i));
+            int  centerWidth= (int) (textWidth/2);
+            canvas.drawText(lines.get(i), originalImageWidth/2 - centerWidth, textY, paint);
+            Log.d("wiwiwi",canvas.getWidth()+"");
             lineDowner = lineDowner + 100;
         }
 
@@ -183,12 +187,12 @@ public class BitmapEditing {
         int originalImageHeight = originalImage.getHeight();
         Paint paint = new Paint();
         paint.setFilterBitmap(true);
-        int smallImageX = (originalImageWidth / 100) * 25;
+        //int smallImageX = (originalImageWidth / 100) * 25;
         int smallImageY = (originalImageHeight / 100) * 89;
         int centerSmallImagX = smallImg.getWidth()/2;
 
         Canvas canvas = new Canvas(originalImage);
-        canvas.drawBitmap(smallImg, smallImageX-centerSmallImagX, smallImageY, paint);
+        canvas.drawBitmap(smallImg,originalImageWidth/2-centerSmallImagX, smallImageY, paint);
         return originalImage;
     }
 }

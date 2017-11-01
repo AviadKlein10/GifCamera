@@ -35,7 +35,6 @@ public class PreviewFrag extends Fragment implements View.OnClickListener {
     private ImageView createGifBtn, backImage;
     private PreviewCallBack listener;
     private int frame_rate;
-    private float alpha;
     private Handler handler;
     private Runnable runnebleFade;
     private int fromActivity;
@@ -85,23 +84,12 @@ public class PreviewFrag extends Fragment implements View.OnClickListener {
            // v.findViewById(R.id.recapture).setVisibility(View.VISIBLE);
         }*/
         loadingTxtView = (TextView)v.findViewById(R.id.loading);
-        alpha = 0.5f;
+
         animationDrawable = new AnimationDrawable();
         animationDrawable.setOneShot(false);
         createGifBtn.setOnClickListener(this);
         shareBtn.setOnClickListener(this);
         backImage.setOnClickListener(this);
-
-        createGifBtn.setAlpha(alpha);
-        handler = new Handler();
-        runnebleFade = new Runnable() {
-            @Override
-            public void run() {
-                createGifBtn.setAlpha(alpha);
-                fadeInButtonShare();
-            }
-        };
-        fadeInButtonShare();
         createGifBtn.setEnabled(false);
 
         if(cameFromGallary){
@@ -111,6 +99,7 @@ public class PreviewFrag extends Fragment implements View.OnClickListener {
             backImage.setImageResource(R.drawable.no_gallery_btn);
         }else{
             createGifBtn.setVisibility(View.VISIBLE);
+            createGifBtn.setEnabled(false);
             shareBtn.setEnabled(false);
             backImage.setImageResource(R.drawable.no_btn);
         }
@@ -145,12 +134,7 @@ public class PreviewFrag extends Fragment implements View.OnClickListener {
     }
 
 
-    private void fadeInButtonShare() {
-        alpha += 0.1;
-        if (alpha < 1) {
-            handler.postDelayed(runnebleFade, 1000);
-        }
-    }
+
 
     private void createImageSet(ArrayList<Bitmap> bmps) {
         BitmapDrawable bitmapDrawable;
@@ -168,14 +152,14 @@ public class PreviewFrag extends Fragment implements View.OnClickListener {
 
     public void makeGifSharable() {
 
-        handler.post(runnebleFade);
+     //   handler.post(runnebleFade);
         loadingTxtView.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.INVISIBLE);
         createGifBtn.setAlpha(1f);
-        createGifBtn.setEnabled(true);
+       // createGifBtn.setEnabled(true);
     }
     public void makeButtonOKEnable() {
-        handler.post(runnebleFade);
+      //  handler.post(runnebleFade);
         loadingTxtView.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.INVISIBLE);
         createGifBtn.setAlpha(1f);
@@ -186,15 +170,14 @@ public class PreviewFrag extends Fragment implements View.OnClickListener {
     public void startProgressDialog() {
         progressBar.setVisibility(View.VISIBLE);
         loadingTxtView.setVisibility(View.VISIBLE);
+        createGifBtn.setEnabled(false);
     }
 
     public void stopProgressBar() {
-        createGifBtn.setEnabled(false);
         shareBtn.setEnabled(true);
         progressBar.setVisibility(View.INVISIBLE);
         loadingTxtView.setVisibility(View.INVISIBLE);
         Toast.makeText(getActivity().getApplicationContext(), "Gif saved successfully", Toast.LENGTH_SHORT).show();
-
     }
 }
 

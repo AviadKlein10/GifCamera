@@ -67,14 +67,13 @@
 
     <ImageButton
         android:id="@+id/shareBtn"
-        android:layout_width="140dp"
-        android:layout_height="140dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/back"
         android:layout_alignParentTop="true"
-        android:layout_margin="30dp"
         app:srcCompat="@drawable/ic_share"
-        android:background="@color/transparent"
-        android:clickable="false"/>
+        android:layout_margin="20dp"
+        android:background="#000000" />
 
 
 </RelativeLayout>
