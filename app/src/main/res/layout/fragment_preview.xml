@@ -1,48 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
 
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true">
 
-
-
         <ImageView
             android:id="@+id/preview_image"
             android:layout_width="wrap_content"
-            android:scaleType="centerCrop"
-            android:layout_height="wrap_content" />
-
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop" />
     </FrameLayout>
 
-
-
-        <ImageView
-            android:id="@+id/back"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:background="@drawable/no_btn"
-            android:scaleType="centerInside"
-            android:layout_margin="15dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"/>
+    <TextView
+        android:id="@+id/main_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:text="היצירה שלכם בהכנה...:)"
+        android:textColor="@android:color/holo_green_dark"
+        android:textSize="50sp" />
 
     <ImageView
-            android:id="@+id/share"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_margin="15dp"
-            android:background="@drawable/yes_btn"
-            android:scaleType="fitCenter"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"/>
+        android:id="@+id/back"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="15dp"
+        android:background="@drawable/no_btn"
+        android:scaleType="centerInside" />
+
+    <ImageView
+        android:id="@+id/share"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="15dp"
+        android:background="@drawable/yes_btn"
+        android:scaleType="fitCenter" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -52,7 +55,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_margin="15dp"
-        android:visibility="invisible"/>
+        android:visibility="invisible" />
 
     <TextView
         android:id="@+id/loading"
@@ -64,17 +67,6 @@
         android:text="Loading..."
         android:textColor="@android:color/holo_green_dark"
         android:textSize="40dp" />
-
-    <ImageButton
-        android:id="@+id/shareBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/back"
-        android:layout_alignParentTop="true"
-        app:srcCompat="@drawable/ic_share"
-        android:layout_margin="20dp"
-        android:background="#000000" />
-
 
 </RelativeLayout>
 

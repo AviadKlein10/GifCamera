@@ -34,13 +34,10 @@ public class StartPresenter extends Presenter<StartActivity> implements OnStartC
     @Override
     public void onStartPressed() {
         if(checkPermission()){
-            if(!isExpired()){
                 Intent intent = new Intent(mView.getApplicationContext(),GifCameraActivity.class);
                 intent.putExtra("frag", Constans.FRAG_CAMERA);
                 intent.putExtra("activity",Constans.ACTIVITY_CAMERA);
                 mView.startActivity(intent);
-            }
-
         }
     }
 

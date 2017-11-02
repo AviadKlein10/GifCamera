@@ -10,7 +10,6 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -39,7 +38,7 @@ public class PreviewFrag extends Fragment implements View.OnClickListener {
     private Runnable runnebleFade;
     private int fromActivity;
     private TextView loadingTxtView;
-    private ImageButton shareBtn;
+    private TextView mainLoading;
 
 
     public void setCameFromGallary(boolean cameFromGallary) {
@@ -79,7 +78,7 @@ public class PreviewFrag extends Fragment implements View.OnClickListener {
         createGifBtn = (ImageView) v.findViewById(R.id.share);
         imageView = (ImageView) v.findViewById(R.id.preview_image);
         progressBar = (ProgressBar) v.findViewById(R.id.progressBar);
-        shareBtn = (ImageButton) v.findViewById(R.id.shareBtn);
+        mainLoading = (TextView) v.findViewById(R.id.main_loading);
         /*if(getFromActivity()!= Constans.ACTIVITY_GALLERY){
            // v.findViewById(R.id.recapture).setVisibility(View.VISIBLE);
         }*/
@@ -88,19 +87,12 @@ public class PreviewFrag extends Fragment implements View.OnClickListener {
         animationDrawable = new AnimationDrawable();
         animationDrawable.setOneShot(false);
         createGifBtn.setOnClickListener(this);
-        shareBtn.setOnClickListener(this);
         backImage.setOnClickListener(this);
-        createGifBtn.setEnabled(false);
-
         if(cameFromGallary){
-            createGifBtn.setVisibility(View.INVISIBLE);
-            shareBtn.setEnabled(true);
             loadingTxtView.setVisibility(View.INVISIBLE);
             backImage.setImageResource(R.drawable.no_gallery_btn);
         }else{
-            createGifBtn.setVisibility(View.VISIBLE);
             createGifBtn.setEnabled(false);
-            shareBtn.setEnabled(false);
             backImage.setImageResource(R.drawable.no_btn);
         }
         return v;
@@ -117,18 +109,16 @@ public class PreviewFrag extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.share:
                // listener.onSharePressed(); // TODO add share when finish generate
-                listener.onCreateGifPressed();
+                if(cameFromGallary){
+                    listener.onSharePressed();
+                }else{
+                    listener.onCreateGifPressed();
+                }
                 break;
 
             case R.id.back:
                 listener.onBackClicked(getFromActivity());
                 break;
-
-
-            case R.id.shareBtn:
-                listener.onSharePressed();
-                break;
-
 
         }
     }
@@ -148,6 +138,7 @@ public class PreviewFrag extends Fragment implements View.OnClickListener {
         layoutParams.height = bmps.get(0).getHeight();
         imageView.setLayoutParams(layoutParams);*/
         animationDrawable.start();
+        mainLoading.setVisibility(View.INVISIBLE);
     }
 
     public void makeGifSharable() {
@@ -161,6 +152,7 @@ public class PreviewFrag extends Fragment implements View.OnClickListener {
     public void makeButtonOKEnable() {
       //  handler.post(runnebleFade);
         loadingTxtView.setVisibility(View.INVISIBLE);
+        mainLoading.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.INVISIBLE);
         createGifBtn.setAlpha(1f);
         createGifBtn.setEnabled(true);
@@ -174,10 +166,16 @@ public class PreviewFrag extends Fragment implements View.OnClickListener {
     }
 
     public void stopProgressBar() {
-        shareBtn.setEnabled(true);
         progressBar.setVisibility(View.INVISIBLE);
         loadingTxtView.setVisibility(View.INVISIBLE);
         Toast.makeText(getActivity().getApplicationContext(), "Gif saved successfully", Toast.LENGTH_SHORT).show();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                listener.onSharePressed();
+            }
+        },400);
+
     }
 }
 

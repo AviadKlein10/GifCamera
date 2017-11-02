@@ -218,12 +218,21 @@ public class GifCameraActivity extends BaseActivity implements BaseView, GifCame
 
     @Override
     public void onSharePressed() {
-        String messageTxt = SharedPreferencesManager.loadValue(this,SharedPreferencesManager.KEY_SHARE_MSG);
-        Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
-        shareIntent.setType("image/gif");
-        shareIntent.putExtra(Intent.EXTRA_TEXT, messageTxt);
-        shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(gifUri));
-        startActivity(Intent.createChooser(shareIntent, "Gif"));
+        if(gifUri.isEmpty()){
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                   onSharePressed();
+                }
+            },400);
+        }else {
+            String messageTxt = SharedPreferencesManager.loadValue(this, SharedPreferencesManager.KEY_SHARE_MSG);
+            Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+            shareIntent.setType("image/gif");
+            shareIntent.putExtra(Intent.EXTRA_TEXT, messageTxt);
+            shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(gifUri));
+            startActivity(Intent.createChooser(shareIntent, "Gif"));
+        }
     }
 
     @Override
